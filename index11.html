@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Калкулатор за страници</title>
+	<style>
+		body {
+			background-color: #2c3e50;
+			color: #fff;
+			font-family: Arial, sans-serif;
+		}
+		h1 {
+			font-size: 36px;
+			font-weight: bold;
+			text-align: center;
+			margin-top: 50px;
+			margin-bottom: 30px;
+			color: #1abc9c;
+			text-shadow: 2px 2px #34495e;
+		}
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-bottom: 50px;
+		}
+		input {
+			padding: 10px;
+			margin: 10px;
+			border-radius: 5px;
+			border: none;
+			background-color: #34495e;
+			color: #fff;
+			font-size: 18px;
+			width: 200px;
+			text-align: center;
+		}
+		input[type=submit] {
+			background-color: #1abc9c;
+			color: #fff;
+			font-size: 24px;
+			font-weight: bold;
+			width: 220px;
+			margin-top: 20px;
+			margin-bottom: 10px;
+		}
+		label {
+			font-size: 24px;
+			margin-top: 20px;
+		}
+		#result {
+			font-size: 28px;
+			font-weight: bold;
+			margin-top: 20px;
+			color: #3498db;
+			text-shadow: 2px 2px #34495e;
+			text-align: center; /* Added to center the result */
+		}
+        #result strong {
+            color: #1abc9c; /* Changed the color of the number to make it more visible */
+        }
+	</style>
+</head>
+<body>
+	<h1>Калкулатор за страници</h1>
+	<form>
+		<label for="interval">Знака с интервали:</label>
+		<input type="number" id="interval" name="interval" min="0" required>
+		<label for="chinese">Китайски знака:</label>
+		<input type="number" id="chinese" name="chinese" min="0" required>
+		<input type="submit" value="Изчисли">
+	</form>
+	<div id="result"></div>
+
+	<script>
+		const form = document.querySelector('form');
+		const result = document.querySelector('#result');
+		
+		form.addEventListener('submit', (event) => {
+			event.preventDefault();
+			
+			const interval = Number(document.querySelector('#interval').value);
+			const chinese = Number(document.querySelector('#chinese').value);
+			const pages = (chinese + ((interval - chinese) / 4)) / 500;
+
+			result.innerHTML = `Стандартни страници (китайски): <strong>${pages.toFixed(1)}</strong>`;
+		});
+	</script>
+</body>
+</html>
