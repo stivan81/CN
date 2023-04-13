@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Countdown Timer</title>
+		<style>
+			body {
+				background-color: #003700;
+				color: white;
+				font-family: Arial, sans-serif;
+				font-size: 2rem;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				height: 100vh;
+				margin: 0;
+			}
+			h1 {
+				margin-top: 0;
+				text-align: center;
+			}
+			.timer {
+				font-size: 6rem;
+				margin-bottom: 2rem;
+				text-align: center;
+			}
+			button {
+				font-size: 1.5rem;
+				background-color: gold;
+				color: #003700;
+				border: none;
+				padding: 1rem 2rem;
+				margin: 0 1rem;
+				border-radius: 10px;
+				cursor: pointer;
+			}
+			input[type="number"] {
+				font-size: 2rem;
+				width: 4.5rem;
+				text-align: right;
+				border: none;
+				background-color: transparent;
+				color: white;
+				margin: 0 1rem;
+				padding: 0.2rem;
+				border: 2px solid gold;
+			}
+
+		</style>
+	</head>
+	<body>
+		<h1>Countdown Timer</h1>
+		<div>
+			<label for="hours">Hours:</label>
+			<input type="number" id="hours" min="0" max="24" value="0">
+			<label for="minutes">Minutes:</label>
+			<input type="number" id="minutes" min="0" max="59" value="0">
+			<label for="seconds">Seconds:</label>
+			<input type="number" id="seconds" min="0" max="59" value="0">
+		</div>
+		<div class="timer" id="timer"></div>
+		<div>
+			<button id="start">Start</button>
+			<button id="pause">Pause</button>
+			<button id="reset">Reset</button>
+		</div>
+		<script>
+			var timer = document.getElementById("timer");
+			var hoursInput = document.getElementById("hours");
+			var minutesInput = document.getElementById("minutes");
+			var secondsInput = document.getElementById("seconds");
+			var startButton = document.getElementById("start");
+			var pauseButton = document.getElementById("pause");
+			var resetButton = document.getElementById("reset");
+			var totalSeconds = 0;
+			var secondsLeft = 0;
+			var intervalId;
+		
+		function startTimer() {
+			totalSeconds = hoursInput.value * 3600 + minutesInput.value * 60 + secondsInput.value * 1;
+			secondsLeft = totalSeconds;
+	
+			intervalId = setInterval(function() {
+				var hours = Math.floor(secondsLeft / 3600);
+				var minutes = Math.floor((secondsLeft % 3600) / 60);
+				var seconds = secondsLeft % 60;
+	
+				timer.innerHTML = formatTime(hours) + ":" + formatTime(minutes) + ":" + formatTime(seconds);
+	
+				if (secondsLeft === 0) {
+					playSound();
+					clearInterval(intervalId);
+				} else {
+					secondsLeft--;
+				}
+			}, 1000);
+		}
+	
+		function pauseTimer() {
+			clearInterval(intervalId);
+		}
+	
+		function resetTimer() {
+			clearInterval(intervalId);
+			timer.innerHTML = "00:00:00";
+			hoursInput.value = 0;
+			minutesInput.value = 0;
+			secondsInput.value = 0;
+		}
+	
+		function formatTime(time) {
+			if (time < 10) {
+				return "0" + time;
+			} else {
+				return time;
+			}
+		}
+	
+		function playSound() {
+			// Play a sound when the timer reaches 0
+			var audio = new Audio('alarm.mp3');
+			audio.play();
+		}
+	
+		startButton.addEventListener("click", startTimer);
+		pauseButton.addEventListener("click", pauseTimer);
+		resetButton.addEventListener("click", resetTimer);
+	
+		document.addEventListener("keydown", function(event) {
+			if (event.keyCode === 13 && (document.activeElement === hoursInput || document.activeElement === minutesInput || document.activeElement === secondsInput)) {
+				startTimer();
+			} else if (event.keyCode === 13 && document.activeElement === pauseButton) {
+				pauseTimer();
+			}
+		});
+	</script>
+</body>
+</html>
+
