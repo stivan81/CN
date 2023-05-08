@@ -1,85 +1,108 @@
+
 <!DOCTYPE html>
 <html>
   <head>
-  <title>Random Number Generator</title>
-  <style>
-    body {
-      background-color: #003700;
-      color: white;
-      font-family: Arial, sans-serif;
-      font-size: 2rem;
-      height: 100vh;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
+    <title>Random Number / Golden Ratio Generator</title>
+    <style>
+      body {
+        background-color: #003700;
+        color: white;
+        font-family: Calibri, sans-serif;
+        font-size: 2rem;
+        height: 95vh;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
 
-    h1 {
-      text-align: center;
-      margin-top: 0;
-    }
+      h1 {
+        text-align: center;
+        margin-top: 0;
+		font-size: 3rem;
+      }
 
-    input[type="number"] {
-      font-size: 2rem;
-      width: 4.5rem;
-      text-align: right;
-      padding: 0.2rem;
-      margin: 0 1rem;
-      border: 2px solid gold;
-      background-color: transparent;
-      color: white;
-      border-radius: 5px;
-    }
+      input[type="number"] {
+        font-size: 2rem;
+        width: 14.5rem;
+        text-align: center;
+        padding: 0.2rem;
+        margin: 1rem;
+        border: 2px solid gold;
+        background-color: transparent;
+        color: white;
+        border-radius: 5px;
+      }
 
-    .result {
-      font-size: 4rem;
-      margin-top: 2rem;
-      text-align: center;
-    }
+      #result {
+        font-size: 4rem;
+        margin-top: 2rem;
+        text-align: center;
+      }
 
-    button {
-      font-size: 1.5rem;
-      background-color: gold;
-      color: #003700;
-      border: none;
-      padding: 1rem 2rem;
-      margin: 2rem 1rem 0;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-  </style>
-</head>
+      button {
+        font-size: 1.5rem;
+        background-color: gold;
+        color: #003700;
+        border: none;
+        padding: 1rem 2rem;
+        margin: 2rem 1rem 0;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
 
   <body>
-    <h1>Random Number Generator</h1>
-    <form>
-      <label for="min">Minimum Value:</label>
-      <br>
-      <input type="number" id="min" >
-      <br>
-      <label for="max">Maximum Value:</label>
-      <br>
-      <input type="number" id="max" >
-      <br>
-      <button type="button" onclick="generateRandomNumber()">Generate Random Number</button>
-    </form>
-    <div id="result"></div>
-    <script>
-      function generateRandomNumber() {
-        const min = parseInt(document.getElementById("min").value);
-        const max = parseInt(document.getElementById("max").value);
-        const resultElement = document.getElementById("result");
-        if (isNaN(min) || isNaN(max)) {
-          resultElement.textContent = "Please enter valid values for minimum and maximum.";
-        } else if (min >= max) {
-          resultElement.textContent = "The minimum value must be less than the maximum value.";
-        } else {
-          const randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
-          resultElement.innerHTML = `Random Number:<br>${randomNumber}`;
-        }
-      }
-    </script>
-  </body>
+	  <h1>Random Number / Golden Ratio Generator</h1>
+	  <form>
+		<label for="min">Minimum Value:</label>
+		<br />
+		<input type="number" id="min" value="1" />
+		<br />
+		<label for="max">Maximum Value:</label>
+		<br />
+		<input type="number" id="max" />
+		<br />
+		<button type="button" onclick="generateRandomNumber()">Generate Random Number</button>
+		<button type="button" onclick="generateGoldenRatio()">Generate Golden Ratio</button>
+	  </form>
+	  <div id="result">&nbsp;</div>
+	  <script>
+		function generateRandomNumber() {
+		  const min = parseInt(document.getElementById("min").value);
+		  const max = parseInt(document.getElementById("max").value);
+		  const resultElement = document.getElementById("result");
+		  if (isNaN(min) || isNaN(max)) {
+			resultElement.textContent = "Please enter valid values for minimum and maximum.";
+		  } else if (min >= max) {
+			resultElement.textContent = "The minimum value must be less than the maximum value.";
+		  } else {
+			const randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
+			resultElement.innerHTML = ` <span style="font-size: 2rem;">Random Number:</span><br>${randomNumber}`;
+		  }
+		}
+
+		function generateGoldenRatio() {
+		  const min = parseInt(document.getElementById("min").value);
+		  const max = parseInt(document.getElementById("max").value);
+		  const resultElement = document.getElementById("result");
+		  if (isNaN(min) || isNaN(max)) {
+			resultElement.textContent = "Please enter valid values for minimum and maximum.";
+		  } else if (min >= max) {
+			resultElement.textContent = "The minimum value must be less than the maximum value.";
+		  } else {
+			const difference = max - min;
+			const goldenRatio = difference * 0.61803398875;
+			const roundedNumber = Math.round(min + goldenRatio);
+			resultElement.innerHTML = `<span style="font-size: 2rem;">Golden Ratio:</span><br>${roundedNumber}`;
+		  }
+		}
+		
+		document.getElementById("max").focus();
+	  </script>
+	</body>
+
 </html>
