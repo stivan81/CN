@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Current Weather in Sofia, Bulgaria</title>
+</head>
+<body>
+  <h1>Current Weather in Sofia, Bulgaria</h1>
+  <div id="weather"></div>
+  <script>
+    // Make an API request to Open-Meteo
+    const apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=42.70&longitude=23.32&hourly=temperature_2m,relativehumidity_2m,precipitation&daily=weathercode,sunrise,sunset&timezone=Europe%2FMoscow';
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        // Update the HTML with the current weather information
+        const temperature = data.hourly[0].temperature_2m;
+        const description = data.daily[0].weathercode;
+        const html = `Temperature: ${temperature} &deg;C<br>Description: ${description}`;
+        document.getElementById('weather').innerHTML = html;
+      })
+      .catch(error => {
+        console.error('Error fetching weather data:', error);
+      });
+  </script>
+</body>
+</html>
