@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Тото 6 от 49</title>
+	<style>
+		body {
+			background-color: #003700;
+			color: white;
+			font-family: Arial, sans-serif;
+			font-size: 2rem;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			margin: 0;
+		}
+		h1 {
+			position:
+			top 25;
+			color: gold;
+			margin-top: 0;
+			text-align: center;
+		}
+		.container {
+			display: flex;
+			flex-wrap: wrap;
+			width: 525px;
+			margin: 0 auto;
+		}
+		.box {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 67.5px;
+			height: 67.5px;
+			border: 1px solid gold;
+			font-size: 41.25px;
+			color: white;
+			position: relative;
+		}
+		.box.crossed-out::before,
+		.box.crossed-out::after {
+			content: "x";
+			position: absolute;
+			top: -63.75px;
+			left: 1;
+			right: 1;
+			bottom: 0;
+			color: #bf0000;
+			z-index: -10;
+			font-size: 135px;
+			font-family: Calibri, sans-serif;
+		}
+		/* Remove the comment symbols below */
+		/*.box.crossed-out::before {
+			transform: rotate(-45deg);
+		}*/
+		.button-container {
+			display: flex;
+			justify-content: center;
+			margin-top: 20px;
+		}
+		.button {
+			padding: 10px 20px;
+			font-size: 20px;
+			background-color: gold;
+			color: black;
+			border: none;
+			cursor: pointer;
+			border-radius: 5px;
+			margin: 0 10px;
+		}
+	</style>
+
+</head>
+<body>
+	
+	<h1>6 от 49</h1>
+	<div class="container">
+		<div class="box" id="box1">1</div>
+		<div class="box" id="box2">2</div>
+		<div class="box" id="box3">3</div>
+		<div class="box" id="box4">4</div>
+		<div class="box" id="box5">5</div>
+		<div class="box" id="box6">6</div>
+		<div class="box" id="box7">7</div>
+		<div class="box" id="box8">8</div>
+		<div class="box" id="box9">9</div>
+		<div class="box" id="box10">10</div>
+		<div class="box" id="box11">11</div>
+		<div class="box" id="box12">12</div>
+		<div class="box" id="box13">13</div>
+		<div class="box" id="box14">14</div>
+		<div class="box" id="box15">15</div>
+		<div class="box" id="box16">16</div>
+		<div class="box" id="box17">17</div>
+		<div class="box" id="box18">18</div>
+		<div class="box" id="box19">19</div>
+		<div class="box" id="box20">20</div>
+		<div class="box" id="box21">21</div>
+		<div class="box" id="box22">22</div>
+		<div class="box" id="box23">23</div>
+		<div class="box" id="box24">24</div>
+		<div class="box" id="box25">25</div>
+		<div class="box" id="box26">26</div>
+		<div class="box" id="box27">27</div>
+		<div class="box" id="box28">28</div>
+		<div class="box" id="box29">29</div>
+		<div class="box" id="box30">30</div>
+		<div class="box" id="box31">31</div>
+		<div class="box" id="box32">32</div>
+		<div class="box" id="box33">33</div>
+		<div class="box" id="box34">34</div>
+		<div class="box" id="box35">35</div>
+		<div class="box" id="box36">36</div>
+		<div class="box" id="box37">37</div>
+		<div class="box" id="box38">38</div>
+		<div class="box" id="box39">39</div>
+		<div class="box" id="box40">40</div>
+		<div class="box" id="box41">41</div>
+		<div class="box" id="box42">42</div>
+		<div class="box" id="box43">43</div>
+		<div class="box" id="box44">44</div>
+		<div class="box" id="box45">45</div>
+		<div class="box" id="box46">46</div>
+		<div class="box" id="box47">47</div>
+		<div class="box" id="box48">48</div>
+		<div class="box" id="box49">49</div>
+
+	</div>
+	<div class="button-container">
+		<button class="button" onclick="crossOutBoxes()">Генерирай числа</button>
+	</div>
+
+	<script>
+		const boxes = document.querySelectorAll('.box');
+
+		function crossOutBoxes() {
+			const numBoxesToCrossOut = 6;
+			let boxesToCrossOut = [];
+
+			// Pick 3 random boxes to cross out
+			while (boxesToCrossOut.length < numBoxesToCrossOut) {
+				const randomIndex = Math.floor(Math.random() * boxes.length);
+				if (!boxesToCrossOut.includes(randomIndex)) {
+					boxesToCrossOut.push(randomIndex);
+				}
+			}
+
+			// Remove the "crossed-out" class from all boxes
+			boxes.forEach(box => {
+				box.classList.remove('crossed-out');
+			});
+
+			// Cross out the selected boxes
+			boxesToCrossOut.forEach(index => {
+				boxes[index].classList.add('crossed-out');
+			});
+		}
+	</script>
+</body>
+</html>
