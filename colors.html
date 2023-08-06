@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            background-color: #fafafa;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .controls {
+            margin-right: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff; 
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .controls button, .controls input {
+            width: 100%; 
+            margin: 8px 0; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            transition: all 0.3s;
+        }
+
+        .controls button:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        #increase, #decrease {
+            font-size: 24px;
+        }
+
+        .container {
+            width: 1000px;
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            overflow: hidden;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .subfield {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; 
+            padding: 15px 20px; 
+            box-sizing: border-box;
+            border-bottom: 1px solid #eee;
+        }
+
+        .demo-text {
+            font-size: 30px; 
+        }
+
+        .input-group {
+            display: flex; 
+            align-items: center; 
+            font-size: 25px; 
+        }
+
+        .color-group {
+            display: flex;
+            align-items: center;
+            margin-left: 10px; 
+        }
+
+        input[type="text"] {
+            width: 100px;
+            margin-right: 5px;
+        }
+
+        button.random-color, button.copy-hex {
+            padding: 5px 10px;
+            margin-left: 5px;
+            transition: background-color 0.2s;
+        }
+
+        button.random-color:hover, button.copy-hex:hover {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button id="increase">+</button>
+        <button id="decrease">-</button>
+        <p>Number of subfields: <span id="count">1</span></p>
+        <input type="number" id="globalFontSize" value="30" min="12" max="72" placeholder="Font Size">
+    </div>
+    <div class="container">
+        <!-- Initial subfield will be replaced by JS -->
+    </div>
+     <script>
+		document.getElementById('increase').addEventListener('click', () => adjustSubfields(1));
+		document.getElementById('decrease').addEventListener('click', () => adjustSubfields(-1));
+		document.getElementById('globalFontSize').addEventListener('input', (e) => {
+			const fontSize = e.target.value;
+			const allDemoTexts = document.querySelectorAll('.demo-text');
+			allDemoTexts.forEach(textElem => {
+				textElem.style.fontSize = `${fontSize}px`;
+			});
+		});
+
+		let currentCount = 1;
+
+		function adjustSubfields(direction) {
+			currentCount += direction;
+
+			if (currentCount < 0) currentCount = 0;
+			if (currentCount > 10) currentCount = 10;
+
+			document.getElementById('count').textContent = currentCount;
+
+			const container = document.querySelector('.container');
+
+			while (container.childElementCount < currentCount) {
+				createSubfield(container);
+			}
+
+			while (container.childElementCount > currentCount) {
+				container.removeChild(container.lastChild);
+			}
+		}
+
+		function createSubfield(parentContainer) {
+			const subfield = document.createElement('div');
+			subfield.classList.add('subfield');
+			subfield.style.width = `100%`;
+			subfield.style.backgroundColor = getRandomColor();
+
+			const demoText = document.createElement('div');
+			demoText.classList.add('demo-text');
+			demoText.textContent = "Demo Text";
+			demoText.style.fontSize = document.getElementById('globalFontSize').value + 'px';
+
+			const inputGroup = document.createElement('div');
+			inputGroup.classList.add('input-group');
+
+			const bgColorInput = createColorInput(subfield, true);
+			const fontColorInput = createColorInput(demoText, false);
+
+			const copyHexButton = document.createElement('button');
+			copyHexButton.textContent = 'Copy Hex';
+			copyHexButton.classList.add('copy-hex');
+			copyHexButton.addEventListener('click', () => {
+				const bgHex = bgColorInput.querySelector('input').value;
+				const fontHex = fontColorInput.querySelector('input').value;
+				copyHexCodesForSubfield(bgHex, fontHex);
+			});
+
+			inputGroup.appendChild(bgColorInput);
+			inputGroup.appendChild(fontColorInput);
+			inputGroup.appendChild(copyHexButton);
+
+			subfield.appendChild(demoText);
+			subfield.appendChild(inputGroup);
+
+			parentContainer.appendChild(subfield);
+		}
+
+		function createColorInput(targetElement, isBackground) {
+			const colorGroup = document.createElement('div');
+			colorGroup.classList.add('color-group');
+
+			const colorInput = document.createElement('input');
+			colorInput.type = "text";
+			colorInput.placeholder = isBackground ? "BG Color" : "Font Color";
+			colorInput.value = isBackground ? targetElement.style.backgroundColor : targetElement.style.color;
+
+			colorInput.addEventListener('input', (e) => {
+				if (isBackground) {
+					targetElement.style.backgroundColor = e.target.value;
+				} else {
+					targetElement.style.color = e.target.value;
+				}
+			});
+
+			const randomColorButton = document.createElement('button');
+			randomColorButton.textContent = 'Random';
+			randomColorButton.classList.add('random-color');
+			randomColorButton.addEventListener('click', () => {
+				const randomColor = getRandomColor();
+				colorInput.value = randomColor;
+				if (isBackground) {
+					targetElement.style.backgroundColor = randomColor;
+				} else {
+					targetElement.style.color = randomColor;
+				}
+			});
+
+			colorGroup.appendChild(colorInput);
+			colorGroup.appendChild(randomColorButton);
+
+			return colorGroup;
+		}
+
+		function copyHexCodesForSubfield(bgColor, fontColor) {
+			const hexCodes = `${bgColor}${fontColor}`;
+			
+			const textarea = document.createElement('textarea');
+			textarea.value = hexCodes;
+			document.body.appendChild(textarea);
+			textarea.select();
+			document.execCommand('copy');
+			document.body.removeChild(textarea);
+		}
+
+		function getRandomColor() {
+			const letters = '0123456789ABCDEF';
+			let color = '#';
+			for (let i = 0; i < 6; i++) {
+				color += letters[Math.floor(Math.random() * 16)];
+			}
+			return color;
+		}
+
+		// Initialize
+		adjustSubfields(0);
+
+    </script>
+</body>
+</html>
