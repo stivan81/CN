@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnolia: Interactive Exercise (Vertical Pinyin)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --container-bg: #1e293b;
+            --text-bg: #e0f2fe;
+            --text-zh: #f8fafc;
+            --pinyin-cover: #9333ea;
+            --pinyin-text: #22c55e;
+            --accent-color: #38bdf8;
+            
+            --bg-font-size: 22px;
+            --zh-font-size: 26px;
+            
+            --font-bg: "Manrope", "Aptos", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-zh: "STKaiti", "KaiTi", "楷体", "Microsoft YaHei", "PingFang SC", serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-bg);
+            font-family: var(--font-bg);
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            -webkit-font-smoothing: antialiased;
+            font-feature-settings: "locl" 1;
+            font-language-override: "BGR";
+            min-height: 100vh;
+        }
+
+        .header-controls {
+            width: 100%;
+            background: rgba(30, 41, 59, 0.5);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .control-group label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #94a3b8;
+            font-weight: 700;
+        }
+
+        .control-group input {
+            cursor: pointer;
+            width: 180px;
+            accent-color: var(--accent-color);
+        }
+
+        .container {
+            max-width: 800px;
+            width: calc(100% - 40px);
+            padding: 40px 0;
+        }
+
+        .title-area {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            line-height: 1.2;
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtext {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        .entry {
+            margin-bottom: 35px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .bg-sentence {
+            display: block;
+            font-size: var(--bg-font-size);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .chinese-main-spoiler {
+            background-color: var(--container-bg);
+            min-height: 80px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 20px;
+            border: 1px solid rgba(56, 189, 248, 0.15);
+        }
+
+        .chinese-main-spoiler:hover {
+            background-color: #2d3a4f;
+            border-color: var(--accent-color);
+        }
+
+        .chinese-main-spoiler::before {
+            content: "Кликни за превод";
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .chinese-main-spoiler.revealed {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.1);
+            cursor: default;
+        }
+
+        .chinese-main-spoiler.revealed::before {
+            display: none;
+        }
+
+        .zh-content {
+            display: none;
+            font-family: var(--font-zh);
+            font-size: var(--zh-font-size);
+            color: var(--text-zh);
+            text-align: left;
+            width: 100%;
+            line-height: 2.5; /* Увеличено разстояние за пинина отгоре */
+        }
+
+        .chinese-main-spoiler.revealed .zh-content {
+            display: block;
+        }
+
+        /* КОНТЕЙНЕР ЗА ЙЕРОГЛИФ + ПИНИН */
+        .zh-unit {
+            display: inline-flex;
+            flex-direction: column-reverse; /* Пинин отгоре, йероглиф отдолу */
+            align-items: center;
+            vertical-align: bottom;
+            margin: 0 4px;
+            line-height: 1;
+        }
+
+        .zh-char {
+            display: block;
+            line-height: 1.2;
+        }
+
+        /* КАПАЧЕТО НА ПИНИНА */
+        .pinyin-inline-spoiler {
+            display: block;
+            font-family: 'Calibri', 'Segoe UI', sans-serif;
+            font-size: calc(var(--zh-font-size) * 0.6);
+            background-color: var(--pinyin-cover);
+            color: transparent;
+            cursor: pointer;
+            padding: 1px 6px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            user-select: none;
+            margin-bottom: 4px; /* Разстояние до йероглифа */
+            min-width: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .pinyin-inline-spoiler:hover:not(.revealed) {
+            transform: translateY(-2px);
+            filter: brightness(1.2);
+        }
+
+        .pinyin-inline-spoiler.revealed {
+            background-color: transparent;
+            color: var(--pinyin-text);
+            box-shadow: none;
+            padding: 1px 0;
+        }
+
+        @media (max-width: 600px) {
+            .header-controls { gap: 15px; padding: 15px; }
+            .control-group input { width: 120px; }
+            h1 { font-size: 1.8rem; }
+            .subtext { font-size: 0.95rem; }
+            .zh-content { line-height: 3; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-controls">
+        <div class="control-group">
+            <label>Текст (БГ)</label>
+            <input type="range" id="bgSlider" min="16" max="42" value="22">
+        </div>
+        <div class="control-group">
+            <label>Текст (ZH)</label>
+            <input type="range" id="zhSlider" min="20" max="52" value="26">
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="title-area">
+            <h1>Магнолия: Джим и Клодия</h1>
+            <p class="subtext">Сюжетната линия на полицая Джим Кърминг и Клодия Гейтър от филма „Магнолия“ (1999) – упражнение за четене с вертикално разположен пинин.</p>
+        </div>
+
+        <!-- Entry 1 -->
+        <div class="entry">
+            <span class="bg-sentence" lang="bg">Джим е добронамерен, но леко непохватен полицай, който патрулира из улиците на Лос Анджелис.</span>
+            <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+                <div class="zh-content">
+                    吉姆是一个心地善良但有些
+                    <span class="zh-unit">
+                        <span class="pinyin-inline-spoiler" onclick="event.stopPropagation(); this.classList.toggle('revealed')">bèn zhuō</span>
+                        <span class="zh-char">笨拙</span>
+                    </span> 
+                    的警察，在洛杉矶的街道上巡逻。
+                </div>
+            </div>
+        </div>
+
+        <!-- Entry 2 -->
+        <div class="entry">
+            <span class="bg-sentence" lang="bg">Една вечер той е извикан по сигнал за нарушаване на тишината в апартамента на Клодия.</span>
+            <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+                <div class="zh-content">
+                    一天晚上，他接到报警，前往克劳迪娅的公寓处理
+                    <span class="zh-unit">
+                        <span class="pinyin-inline-spoiler" onclick="event.stopPropagation(); this.classList.toggle('revealed')">zào yīn</span>
+                        <span class="zh-char">噪音</span>
+                    </span> 
+                    投诉。
+                </div>
+            </div>
+        </div>
+
+        <!-- Entry 3 -->
+        <div class="entry">
+            <span class="bg-sentence" lang="bg">Клодия крие дълбока емоционална травма, причинена от нейния баща.</span>
+            <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+                <div class="zh-content">
+                    克劳迪娅隐藏着由她父亲造成的深深的情感
+                    <span class="zh-unit">
+                        <span class="pinyin-inline-spoiler" onclick="event.stopPropagation(); this.classList.toggle('revealed')">chuàng shāng</span>
+                        <span class="zh-char">创伤</span>
+                    </span>。
+                </div>
+            </div>
+        </div>
+
+        <!-- Entry 4 -->
+        <div class="entry">
+            <span class="bg-sentence" lang="bg">За да се справи с болката, тя използва наркотици.</span>
+            <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+                <div class="zh-content">
+                    为了应对痛苦，她吸食
+                    <span class="zh-unit">
+                        <span class="pinyin-inline-spoiler" onclick="event.stopPropagation(); this.classList.toggle('revealed')">dú pǐn</span>
+                        <span class="zh-char">毒品</span>
+                    </span>。
+                </div>
+            </div>
+        </div>
+
+        <!-- Entry 5 -->
+        <div class="entry">
+            <span class="bg-sentence" lang="bg">Когато Джим пристига, той веднага е привлечен от нейната уязвимост.</span>
+            <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+                <div class="zh-content">
+                    当吉姆到达时，他立刻被她的
+                    <span class="zh-unit">
+                        <span class="pinyin-inline-spoiler" onclick="event.stopPropagation(); this.classList.toggle('revealed')">cuì ruò</span>
+                        <span class="zh-char">脆弱</span>
+                    </span> 
+                    所吸引。
+                </div>
+            </div>
+        </div>
+
+        <!-- Entry 7 -->
+        <div class="entry">
+            <span class="bg-sentence" lang="bg">Той събира смелост и я кани на среща.</span>
+            <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+                <div class="zh-content">
+                    他鼓起
+                    <span class="zh-unit">
+                        <span class="pinyin-inline-spoiler" onclick="event.stopPropagation(); this.classList.toggle('revealed')">yǒng qì</span>
+                        <span class="zh-char">勇气</span>
+                    </span> 
+                    邀请她去
+                    <span class="zh-unit">
+                        <span class="pinyin-inline-spoiler" onclick="event.stopPropagation(); this.classList.toggle('revealed')">yuē huì</span>
+                        <span class="zh-char">约会</span>
+                    </span>。
+                </div>
+            </div>
+        </div>
+
+        <!-- Entry 12 -->
+        <div class="entry">
+            <span class="bg-sentence" lang="bg">На следващия ден от небето започват да падат жаби.</span>
+            <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+                <div class="zh-content">
+                    第二天，天空中突然开始下起
+                    <span class="zh-unit">
+                        <span class="pinyin-inline-spoiler" onclick="event.stopPropagation(); this.classList.toggle('revealed')">qīng wā yǔ</span>
+                        <span class="zh-char">青蛙雨</span>
+                    </span>。
+                </div>
+            </div>
+        </div>
+
+        <!-- Entry 15 -->
+        <div class="entry">
+            <span class="bg-sentence" lang="bg">Филмът завършва с нейната плаха усмивка.</span>
+            <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+                <div class="zh-content">
+                    电影以她美丽而
+                    <span class="zh-unit">
+                        <span class="pinyin-inline-spoiler" onclick="event.stopPropagation(); this.classList.toggle('revealed')">dǎn qiè</span>
+                        <span class="zh-char">胆怯</span>
+                    </span> 
+                    的微笑结束。
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const bgSlider = document.getElementById('bgSlider');
+        const zhSlider = document.getElementById('zhSlider');
+        const root = document.documentElement;
+
+        bgSlider.addEventListener('input', (e) => {
+            root.style.setProperty('--bg-font-size', e.target.value + 'px');
+        });
+
+        zhSlider.addEventListener('input', (e) => {
+            root.style.setProperty('--zh-font-size', e.target.value + 'px');
+        });
+    </script>
+</body>
+</html>
