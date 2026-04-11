@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黒澤明 · Куросава — Асистентът и Учителят</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --border: #38bdf8;
+            --border-dim: #1c3f57;
+            --text-bg: #e0f2fe;
+            --text-muted: #7a9ab8;
+            --accent: #38bdf8;
+            --gold: #e2a84b;
+            --pinyin-cover: #9333ea;
+            --pinyin-green: #22c55e;
+            
+            /* Динамични размери */
+            --bg-fs: 20px;
+            --zh-fs: 28px;
+            --pin-fs: calc(var(--zh-fs) * 0.55);
+            
+            /* Шрифтови стекове */
+            --font-bg: 'Manrope', sans-serif;
+            --font-zh: 'STKaiti', 'KaiTi', '楷体', 'ZCOOL XiaoWei', serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg);
+            color: var(--text-bg);
+            font-family: var(--font-bg);
+            font-variant-ligatures: normal;
+            font-feature-settings: "locl" 1;
+            font-language-override: "BGR";
+            min-height: 100vh;
+            padding-bottom: 80px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ══ HEADER ═══════════════════════════════════════ */
+        .page-header {
+            text-align: center;
+            padding: 60px 24px;
+            background: linear-gradient(180deg, #080f1e 0%, var(--bg) 100%);
+            border-bottom: 1px solid var(--border-dim);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        .zh-head {
+            display: block;
+            font-family: var(--font-zh);
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-top: 10px;
+            letter-spacing: 0.2em;
+        }
+
+        .subtext {
+            margin: 20px auto 0;
+            max-width: 650px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ══ CONTROLS ═════════════════════════════════════ */
+        .controls-panel {
+            background: #131f33;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            border-bottom: 1px solid var(--border-dim);
+        }
+
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .slider-group label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+        }
+
+        input[type=range] {
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+
+        /* ══ CONTENT ══════════════════════════════════════ */
+        .content-wrap {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .chapter-label {
+            color: var(--gold);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin: 60px 0 20px;
+            border-bottom: 1px solid #2d445d;
+            padding-bottom: 10px;
+        }
+        .chapter-label:first-of-type { margin-top: 0; }
+
+        .entry {
+            margin-bottom: 45px;
+            animation: fadeIn 0.6s ease both;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .bg-sentence {
+            font-size: var(--bg-fs);
+            line-height: 1.7;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* ══ SPOILERS ═════════════════════════════════════ */
+        .chinese-main-spoiler {
+            background: var(--surface);
+            border: 1.5px solid var(--border-dim);
+            border-radius: 12px;
+            padding: 25px 20px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .chinese-main-spoiler:hover {
+            border-color: var(--border);
+            background: var(--surface-hover);
+        }
+
+        .chinese-main-spoiler::before {
+            content: "▶ Покажи китайски превод";
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--surface);
+            color: var(--accent);
+            font-weight: 600;
+            z-index: 10;
+            border-radius: 11px;
+        }
+
+        .chinese-main-spoiler.revealed::before { display: none; }
+
+        .zh-content {
+            display: none;
+            font-family: var(--font-zh);
+            font-size: var(--zh-fs);
+            color: #fff;
+            line-height: 1; 
+        }
+
+        .chinese-main-spoiler.revealed .zh-content { 
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end; 
+        }
+
+        /* УНИФИЦИРАН БЛОК ЗА ЙЕРОГЛИФ (С ИЛИ БЕЗ ПИНИН) */
+        .zh-node {
+            display: inline-flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            margin: 0 1px 16px 1px;
+        }
+
+        .zh-char { 
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        /* Зона за Пинин (с фиксирана височина за стабилност) */
+        .pinyin-box {
+            height: calc(var(--pin-fs) + 12px);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .pinyin-inline-spoiler {
+            font-family: 'Manrope', sans-serif;
+            font-size: var(--pin-fs);
+            background: var(--pinyin-cover);
+            color: transparent;
+            padding: 1px 5px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .pinyin-inline-spoiler.revealed {
+            background: transparent;
+            color: var(--pinyin-green);
+        }
+
+        /* Препинателни знаци */
+        .zh-punct {
+            margin-bottom: 16px;
+            padding: 0 2px;
+            color: var(--text-muted);
+            font-size: var(--zh-fs);
+        }
+
+        .wgap { width: 0.15em; }
+    </style>
+</head>
+<body>
+
+<header class="page-header">
+    <h1>Нещо като автобиография — II</h1>
+    <span class="zh-head">似水流年：師徒之道</span>
+    <p class="subtext">
+        Откъси от спомените на <strong>Куросава Акира</strong> (黒澤明). История за годините като асистент-режисьор, занаята на сценариста и суровата школа на японското кино.
+    </p>
+</header>
+
+<div class="controls-panel">
+    <div class="slider-group">
+        <label>Български</label>
+        <input type="range" id="bgSlider" min="16" max="42" value="20" oninput="updateSize('--bg-fs', this.value)">
+    </div>
+    <div class="slider-group">
+        <label>Китайски</label>
+        <input type="range" id="zhSlider" min="20" max="52" value="28" oninput="updateSize('--zh-fs', this.value)">
+    </div>
+</div>
+
+<main class="content-wrap">
+    
+    <div class="chapter-label">Глава I — Асистентът · 学徒岁月</div>
+
+    <!-- 1 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">Когато постъпих в студио „Пи Си Эл" като асистент-режисьор, ме накараха да мия тоалетните — и аз го правех с искрено усърдие, защото разбирах, че именно тук започва всичко.</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node"><div class="zh-char">我进入</div><div class="pinyin-box"></div></div>
+                <div class="zh-node"><div class="zh-char">PCL</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">摄影棚</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shèyǐngpéng</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">担任</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">dànrèn</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">副导演</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">fù dǎoyǎn</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">时</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">被要求去</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">清扫厕所</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">qīngsǎo cèsuǒ</span></div>
+                </div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">但我非常</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">勤恳</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">qínkěn</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">地完成了</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">因为我知道</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">万事</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wànshì</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">都从</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">此处发端</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">cǐchù fāduān</span></div>
+                </div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">Учителят ми Ямамото Кайиро никога не ми казваше „браво" — вместо това ми показваше собствените ми грешки така, че аз сам да стигна до правилния отговор.</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node"><div class="zh-char">我的</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">恩师</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">ēnshī</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">山本嘉次郎从不口出</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">赞词</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zàncí</span></div>
+                </div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">而是通过</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">展示</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhǎnshì</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">我的</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">失误</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shīwù</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">来</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">引导</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yǐndǎo</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">我</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">让我</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">领悟</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">lǐngwù</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">正确答案</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">Ямамото ме научи, че режисьорът, който не може да напише собствен сценарий, е като художник, на когото са завързали ръцете.</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node"><div class="zh-char">山本</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">教导</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jiàodǎo</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">我说</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">无法</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">执笔</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhíbǐ</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">剧本</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jùběn</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">的导演</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node">
+                    <div class="zh-char">犹如</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yóurú</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">双手</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">被缚</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">bèifù</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">的</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">画家</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">huàjiā</span></div>
+                </div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chapter-label">Глава II — Занаятът на сценариста · 编剧之道</div>
+
+    <!-- 4 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">Писането на сценарий е абсолютно различно от писането на роман: в романа можеш да опишеш вътрешното — в сценария всичко трябва да се вижда и чува.</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node">
+                    <div class="zh-char">编写</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">biānxiě</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">剧本</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jùběn</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">与</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">撰写</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhuànxiě</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">小说</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">截然不同</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jiérán bùtóng</span></div>
+                </div>
+                <div class="zh-punct">：</div>
+                <div class="zh-node"><div class="zh-char">小说可以</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">描摹</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">miáomó</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">内心</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">nèixīn</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">世界</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">而剧本则</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">须令</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">xū lìng</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">一切</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">可见</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">kějiàn</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">、</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">可闻</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">kěwén</span></div>
+                </div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">Научих се да пиша сценарии, като копирах стотици от тях на ръка — дума по дума, за да усетя ритъма им в пръстите си.</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node"><div class="zh-char">我通过</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">手工</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shǒugōng</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">誊抄</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">téngchāo</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">数以百计</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shùyǐ bǎijì</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">的剧本来</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">习得</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">xídé</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">编剧之术</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">biānjù zhī shù</span></div>
+                </div>
+                <div class="zh-punct">：</div>
+                <div class="zh-node">
+                    <div class="zh-char">逐字</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhúzì</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">誊录</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">ténglù</span></div>
+                </div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">只为以</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">指尖</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhǐjiān</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">感知</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">gǎnzhī</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">其</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">内在</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">nèizài</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">节奏</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jiézòu</span></div>
+                </div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">Ямамото ме изпрати да гледам всеки филм, пуснат в Токио, и след това да му пиша подробни анализи — защото окото на режисьора се тренира само с гледане.</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node"><div class="zh-char">山本令我</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">观看</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">guānkàn</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">东京</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">上映</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shàngyìng</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">的每一部</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">影片</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yǐngpiān</span></div>
+                </div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node">
+                    <div class="zh-char">随后</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">suíhòu</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">向他</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">呈交</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">chéngjiāo</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">详尽</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">xiángjìn</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">的</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">评析</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">pīngxī</span></div>
+                </div>
+                <div class="zh-punct">：</div>
+                <div class="zh-node"><div class="zh-char">因为导演之眼</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">唯有</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wéiyǒu</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">在观看中</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">方能</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">fāng néng</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">磨砺</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">mólì</span></div>
+                </div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chapter-label">Глава III — Цензурата и войната · 战时审查</div>
+
+    <!-- 7 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">В периода на войната военните цензори прочитаха всеки сценарий и заличаваха всичко, което смятаха за „неподходящо за духа на нацията".</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node">
+                    <div class="zh-char">战时</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhànshí</span></div>
+                </div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node">
+                    <div class="zh-char">军部</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jūnbù</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">审查官</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shěncháguān</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">会</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">逐一审阅</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhúyī shěnyuè</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">每份剧本</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">凡被</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">认定</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">rèndìng</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">为“</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">有损</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yǒusǔn</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">国家精神</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">guójiā jīngshén</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">”之</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">内容</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">nèiróng</span></div>
+                </div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">皆</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">遭删除</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zāo shānchú</span></div>
+                </div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">Научих се да пиша истината така, че цензорите да не я видят — скрита под видимостта на пропагандата, но жива за тези, които умеят да четат.</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node"><div class="zh-char">我学会了将真相</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">隐匿</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yǐnì</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">其中</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">使审查官</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">无从察觉</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wúcóng chájué</span></div>
+                </div>
+                <div class="zh-punct">：</div>
+                <div class="zh-node">
+                    <div class="zh-char">隐于</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yǐnyú</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">宣传</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">xuānchuán</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">的</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">表象</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">biǎoxiàng</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">之下</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">却对能</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">读懂</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">dúdǒng</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">之人</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">生动</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shēngdòng</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">存在</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chapter-label">Глава IV — Дебютният филм · 初执导筒</div>
+
+    <!-- 9 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">„Джудо Сага" беше моят первый филм — бях толкова уплашен, че цялата нощ преди снимките прекарах в треска, като си мислех, че не съм достоен за това.</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node"><div class="zh-char">《姿三四郎》是我的</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">处女作</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">chǔnǚ zuò</span></div>
+                </div>
+                <div class="zh-punct">：</div>
+                <div class="zh-node"><div class="zh-char">我</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">惊恐至极</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jīngkǒng zhìjí</span></div>
+                </div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node">
+                    <div class="zh-char">拍摄前夕</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">pāishè qiányè</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">整夜辗转难眠</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhěngyè zhǎnzhuǎn nánmián</span></div>
+                </div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">心想自己</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">根本</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">gēnběn</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">不</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">配担当</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">pèi dāngdāng</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">此任</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">На снимачната площадка обаче нещо се промени в мен — камерата, актьорите, светлината: всичко стана съвършено ясно и аз знаех точно какво да правя.</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node"><div class="zh-char">然而一</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">踏上</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">tàshàng</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">摄影现场</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shèyǐng xiànchǎng</span></div>
+                </div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">我</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">内心</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">nèixīn</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">便发生了</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">某种转变</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">mǒuzhǒng zhuǎnbiàn</span></div>
+                </div>
+                <div class="zh-punct">：</div>
+                <div class="zh-node">
+                    <div class="zh-char">摄影机</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shèyǐngjī</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">、</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">演员</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yǎnyuán</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">、光线</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">一切</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">豁然明朗</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">huòrán míngláng</span></div>
+                </div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">而我清晰地知道该做什么</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<script>
+    function updateSize(prop, val) {
+        document.documentElement.style.setProperty(prop, val + 'px');
+    }
+</script>
+
+</body>
+</html>
