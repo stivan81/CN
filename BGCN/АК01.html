@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Куросава · 黒澤明 — Интерактивно четене</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --surface2: #162032;
+    --border: #38bdf8;
+    --border-dim: #1e4a6e;
+    --text-bg: #e0f2fe;
+    --text-muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent2: #0ea5e9;
+    --pinyin-cover: #9333ea;
+    --pinyin-revealed: #22c55e;
+    --gold: #f59e0b;
+    --bg-font-size: 20px;
+    --zh-font-size: 32px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-bg);
+    font-family: 'Manrope', 'Segoe UI', sans-serif;
+    font-language-override: "BGR";
+    font-feature-settings: "locl" 1;
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* ── HEADER ─────────────────────────────────── */
+  .page-header {
+    text-align: center;
+    padding: 52px 24px 32px;
+    border-bottom: 1px solid var(--border-dim);
+    background: linear-gradient(180deg, #0a1628 0%, var(--bg) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: "黒澤";
+    position: absolute;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 220px;
+    color: rgba(56, 189, 248, 0.04);
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    letter-spacing: -8px;
+    white-space: nowrap;
+  }
+  .page-header h1 {
+    font-family: 'Manrope', sans-serif;
+    font-language-override: "BGR";
+    font-feature-settings: "locl" 1;
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--text-bg);
+    position: relative;
+    z-index: 1;
+  }
+  .page-header h1 .zh-title {
+    font-family: 'Noto Serif SC', serif;
+    color: var(--accent);
+    font-size: 1.8rem;
+    display: block;
+    margin-top: 6px;
+    letter-spacing: 6px;
+  }
+  .page-header .subtext {
+    margin-top: 14px;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 1;
+  }
+  .page-header .subtext strong {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ── CONTROLS ─────────────────────────────────── */
+  .controls-panel {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border-dim);
+    padding: 18px 32px;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .slider-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .slider-group label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    font-language-override: "BGR";
+    font-feature-settings: "locl" 1;
+  }
+  .slider-group input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 140px;
+    height: 4px;
+    background: var(--border-dim);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+  .slider-group input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .slider-group input[type=range]::-webkit-slider-thumb:hover {
+    background: var(--accent2);
+  }
+  .slider-val {
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 700;
+    min-width: 32px;
+    text-align: right;
+  }
+  .controls-hint {
+    text-align: center;
+    padding: 10px 24px 0;
+    font-size: 0.78rem;
+    color: #475569;
+    font-language-override: "BGR";
+    font-feature-settings: "locl" 1;
+  }
+  .controls-hint span {
+    display: inline-block;
+    margin: 0 6px;
+  }
+  .dot-purple { color: var(--pinyin-cover); }
+  .dot-blue   { color: var(--border); }
+  .dot-green  { color: var(--pinyin-revealed); }
+
+  /* ── MAIN CONTENT ─────────────────────────────── */
+  .content-wrap {
+    max-width: 760px;
+    margin: 40px auto;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  /* ── CHAPTER LABEL ─────────────────────────────── */
+  .chapter-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 28px 0 8px;
+    border-top: 1px solid #1e3a50;
+    font-language-override: "BGR";
+    font-feature-settings: "locl" 1;
+  }
+  .chapter-label:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  /* ── ENTRY ─────────────────────────────────────── */
+  .entry {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: fadeUp 0.5s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Bulgarian sentence */
+  .bg-sentence {
+    font-family: 'Manrope', 'Segoe UI', sans-serif;
+    font-language-override: "BGR";
+    font-feature-settings: "locl" 1;
+    font-size: var(--bg-font-size);
+    font-weight: 400;
+    color: var(--text-bg);
+    line-height: 1.65;
+    display: block;
+  }
+
+  /* ── MAIN CHINESE SPOILER ─────────────────────── */
+  .chinese-main-spoiler {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+    user-select: none;
+  }
+  .chinese-main-spoiler:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 18px rgba(56, 189, 248, 0.12);
+  }
+
+  /* Cover overlay — hides content until revealed */
+  .chinese-main-spoiler::before {
+    content: "▶  Показване на китайски превод";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Manrope', sans-serif;
+    font-language-override: "BGR";
+    font-feature-settings: "locl" 1;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    background: var(--surface);
+    border-radius: 9px;
+    z-index: 2;
+    transition: opacity 0.35s ease, visibility 0.35s;
+  }
+  .chinese-main-spoiler.revealed::before {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .chinese-main-spoiler.revealed {
+    cursor: default;
+  }
+
+  /* ── ZH CONTENT ───────────────────────────────── */
+  .zh-content {
+    font-family: 'Noto Sans SC', 'Noto Serif SC', serif;
+    font-size: var(--zh-font-size);
+    line-height: 2.2;
+    color: #f1f5f9;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 3px 0;
+    /* Hidden until spoiler opened */
+    opacity: 0;
+    transition: opacity 0.3s ease 0.1s;
+  }
+  .chinese-main-spoiler.revealed .zh-content {
+    opacity: 1;
+  }
+
+  /* ── ZH-UNIT (char + pinyin stacked) ─────────── */
+  .zh-unit {
+    display: inline-flex;
+    flex-direction: column-reverse;  /* pinyin on TOP */
+    align-items: center;
+    position: relative;
+  }
+  .zh-char {
+    font-family: 'Noto Sans SC', serif;
+    font-size: var(--zh-font-size);
+    line-height: 1.2;
+    color: #f1f5f9;
+    display: block;
+  }
+
+  /* ── PINYIN INLINE SPOILER ────────────────────── */
+  .pinyin-inline-spoiler {
+    font-family: 'Manrope', sans-serif;
+    font-size: calc(var(--zh-font-size) * 0.6);
+    line-height: 1;
+    font-weight: 500;
+    padding: 2px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    display: inline-block;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s;
+    background: var(--pinyin-cover);
+    color: var(--pinyin-cover);  /* text invisible until revealed */
+    min-width: 1ch;
+    text-align: center;
+  }
+  .pinyin-inline-spoiler:hover {
+    filter: brightness(1.2);
+  }
+  .pinyin-inline-spoiler.revealed {
+    background: transparent;
+    color: var(--pinyin-revealed);
+  }
+
+  /* Punctuation — no pinyin box */
+  .zh-punct {
+    font-family: 'Noto Sans SC', serif;
+    font-size: var(--zh-font-size);
+    color: #94a3b8;
+    line-height: 1.2;
+    align-self: flex-end;
+    padding-bottom: 2px;
+    margin-bottom: calc(var(--zh-font-size) * 0.6 + 6px);
+  }
+
+  /* Spacer between words */
+  .zh-space {
+    width: 0.15em;
+    display: inline-block;
+  }
+
+  /* Inline plain text in zh-content */
+  .zh-plain {
+    font-family: 'Noto Sans SC', serif;
+    font-size: var(--zh-font-size);
+    line-height: 1.2;
+    color: #94a3b8;
+    align-self: flex-end;
+  }
+
+  /* ── FOOTER ───────────────────────────────────── */
+  footer {
+    text-align: center;
+    padding: 40px 24px 20px;
+    color: #334155;
+    font-size: 0.76rem;
+    font-language-override: "BGR";
+    font-feature-settings: "locl" 1;
+  }
+  footer a { color: #475569; }
+
+  /* ── REVEAL ALL BUTTON ─────────────────────────── */
+  .reveal-all-btn {
+    display: block;
+    margin: 0 auto 8px;
+    padding: 10px 28px;
+    background: transparent;
+    border: 1.5px solid var(--border-dim);
+    border-radius: 8px;
+    color: var(--text-muted);
+    font-family: 'Manrope', sans-serif;
+    font-language-override: "BGR";
+    font-feature-settings: "locl" 1;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .reveal-all-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════ -->
+<header class="page-header">
+  <h1>
+    Нещо като автобиография
+    <span class="zh-title">似乎是一种自传</span>
+  </h1>
+  <p class="subtext">
+    Откъси от автобиографията на <strong>Куросава Акира</strong> (黒澤明) —
+    великото земетресение от 1923 г., детството в Токио и пътят към киното.
+    Оригинален текст: <em>Something Like an Autobiography</em>, 1982.
+  </p>
+</header>
+
+<!-- ══════════════════════════════════════════════
+     CONTROLS
+═══════════════════════════════════════════════ -->
+<div class="controls-panel">
+  <div class="slider-group">
+    <label>Български</label>
+    <input type="range" id="bgSlider" min="16" max="42" value="20"
+           oninput="setBgSize(this.value)">
+    <span class="slider-val" id="bgVal">20px</span>
+  </div>
+  <div class="slider-group">
+    <label>Китайски</label>
+    <input type="range" id="zhSlider" min="20" max="52" value="32"
+           oninput="setZhSize(this.value)">
+    <span class="slider-val" id="zhVal">32px</span>
+  </div>
+</div>
+<p class="controls-hint">
+  <span class="dot-blue">■</span> Кликни на синьото поле → разкрий превода &nbsp;|&nbsp;
+  <span class="dot-purple">■</span> Лилаво капаче → скрит пинин &nbsp;|&nbsp;
+  <span class="dot-green">■</span> Зелено → разкрит пинин
+</p>
+
+<!-- ══════════════════════════════════════════════
+     CONTENT
+═══════════════════════════════════════════════ -->
+<main class="content-wrap" id="mainContent">
+
+  <!-- ░░ CHAPTER 1 ░░ -->
+  <div class="chapter-label">Глава I — Детството в Токио · 童年在东京</div>
+
+  <!-- Entry 1 -->
+  <div class="entry">
+    <span class="bg-sentence" lang="bg">Баща ми беше строг, но справедлив човек — офицер, преминал в ерата на Мейджи от традиционна самурайска дисциплина към западния свят на физическото възпитание.</span>
+    <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+      <div class="zh-content">
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wǒ</span><span class="zh-char">我</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">fù</span><span class="zh-char">父</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">qīn</span><span class="zh-char">亲</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yán</span><span class="zh-char">严</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">gé</span><span class="zh-char">格</span></span>
+        <span class="zh-punct">，</span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">dàn</span><span class="zh-char">但</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">gōng</span><span class="zh-char">公</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhèng</span><span class="zh-char">正</span></span>
+        <span class="zh-punct">——</span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yī</span><span class="zh-char">一</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wèi</span><span class="zh-char">位</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">míng</span><span class="zh-char">明</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhì</span><span class="zh-char">治</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shí</span><span class="zh-char">时</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">dài</span><span class="zh-char">代</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">de</span><span class="zh-char">的</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jūn</span><span class="zh-char">军</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">guān</span><span class="zh-char">官</span></span>
+        <span class="zh-punct">。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Entry 2 -->
+  <div class="entry">
+    <span class="bg-sentence" lang="bg">Той смяташе, че киното е добро за нас — децата — и редовно ни водеше на прожекции, нещо необичайно за родителите от онова време.</span>
+    <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+      <div class="zh-content">
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">tā</span><span class="zh-char">他</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">rèn</span><span class="zh-char">认</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wéi</span><span class="zh-char">为</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">diàn</span><span class="zh-char">电</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yǐng</span><span class="zh-char">影</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">duì</span><span class="zh-char">对</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">hái</span><span class="zh-char">孩</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zi</span><span class="zh-char">子</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yǒu</span><span class="zh-char">有</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yì</span><span class="zh-char">益</span></span>
+        <span class="zh-punct">，</span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">cháng</span><span class="zh-char">常</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">dài</span><span class="zh-char">带</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wǒ</span><span class="zh-char">我</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">men</span><span class="zh-char">们</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">qù</span><span class="zh-char">去</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">kàn</span><span class="zh-char">看</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">diàn</span><span class="zh-char">电</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yǐng</span><span class="zh-char">影</span></span>
+        <span class="zh-punct">。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Entry 3 -->
+  <div class="entry">
+    <span class="bg-sentence" lang="bg">Братята и сестрите ми бяха шест на брой; аз бях последното дете — малкото, на което другите никога не обръщат внимание.</span>
+    <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+      <div class="zh-content">
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wǒ</span><span class="zh-char">我</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yǒu</span><span class="zh-char">有</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">liù</span><span class="zh-char">六</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">gè</span><span class="zh-char">个</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">xiōng</span><span class="zh-char">兄</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">dì</span><span class="zh-char">弟</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jiě</span><span class="zh-char">姐</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">mèi</span><span class="zh-char">妹</span></span>
+        <span class="zh-punct">；</span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wǒ</span><span class="zh-char">我</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shì</span><span class="zh-char">是</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zuì</span><span class="zh-char">最</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">xiǎo</span><span class="zh-char">小</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">de</span><span class="zh-char">的</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">nà</span><span class="zh-char">那</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">ge</span><span class="zh-char">个</span></span>
+        <span class="zh-punct">。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ░░ CHAPTER 2 ░░ -->
+  <div class="chapter-label">Глава II — Великото земетресение от 1923 г. · 一九二三年大地震</div>
+
+  <!-- Entry 4 -->
+  <div class="entry">
+    <span class="bg-sentence" lang="bg">Земетресението удари в единадесет часа и петдесет и осем минути на сутринта на първи септември 1923 г. — точно в момента, когато хората разпалваха огъня за обяд.</span>
+    <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+      <div class="zh-content">
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">dì</span><span class="zh-char">地</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhèn</span><span class="zh-char">震</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">fā</span><span class="zh-char">发</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shēng</span><span class="zh-char">生</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zài</span><span class="zh-char">在</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shàng</span><span class="zh-char">上</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wǔ</span><span class="zh-char">午</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shí</span><span class="zh-char">十</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yī</span><span class="zh-char">一</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">diǎn</span><span class="zh-char">点</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wǔ</span><span class="zh-char">五</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shí</span><span class="zh-char">十</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">bā</span><span class="zh-char">八</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">fēn</span><span class="zh-char">分</span></span>
+        <span class="zh-punct">，</span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhèng</span><span class="zh-char">正</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shì</span><span class="zh-char">是</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">rén</span><span class="zh-char">人</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">men</span><span class="zh-char">们</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shēng</span><span class="zh-char">生</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">huǒ</span><span class="zh-char">火</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zuò</span><span class="zh-char">做</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wǔ</span><span class="zh-char">午</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">fàn</span><span class="zh-char">饭</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">de</span><span class="zh-char">的</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shí</span><span class="zh-char">时</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">hou</span><span class="zh-char">候</span></span>
+        <span class="zh-punct">。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Entry 5 -->
+  <div class="entry">
+    <span class="bg-sentence" lang="bg">Братът ми Хейго ме поведе из разрушения Токио — искаше да ми покаже истинското лице на смъртта, за да не се страхувам от нея.</span>
+    <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+      <div class="zh-content">
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wǒ</span><span class="zh-char">我</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">gē</span><span class="zh-char">哥</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">gē</span><span class="zh-char">哥</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">Hèi</span><span class="zh-char">平</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wú</span><span class="zh-char">午</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">dài</span><span class="zh-char">带</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wǒ</span><span class="zh-char">我</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">chuān</span><span class="zh-char">穿</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yuè</span><span class="zh-char">越</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">fèi</span><span class="zh-char">废</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">xū</span><span class="zh-char">墟</span></span>
+        <span class="zh-punct">，</span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">ràng</span><span class="zh-char">让</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wǒ</span><span class="zh-char">我</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">qīn</span><span class="zh-char">亲</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yǎn</span><span class="zh-char">眼</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">kàn</span><span class="zh-char">看</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">sǐ</span><span class="zh-char">死</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wáng</span><span class="zh-char">亡</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">de</span><span class="zh-char">的</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhēn</span><span class="zh-char">真</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shí</span><span class="zh-char">实</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">miàn</span><span class="zh-char">面</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">mào</span><span class="zh-char">貌</span></span>
+        <span class="zh-punct">。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Entry 6 -->
+  <div class="entry">
+    <span class="bg-sentence" lang="bg">Навсякъде из улиците лежаха трупове — хора, коне, изгорени до неузнаваемост. Братът ми ме накара да гледам, без да извръщам поглед.</span>
+    <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+      <div class="zh-content">
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jiē</span><span class="zh-char">街</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">dào</span><span class="zh-char">道</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">biàn</span><span class="zh-char">遍</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">bù</span><span class="zh-char">布</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shī</span><span class="zh-char">尸</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">tǐ</span><span class="zh-char">体</span></span>
+        <span class="zh-punct">——</span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">rén</span><span class="zh-char">人</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yǔ</span><span class="zh-char">与</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">mǎ</span><span class="zh-char">马</span></span>
+        <span class="zh-punct">，</span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">dōu</span><span class="zh-char">都</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">bèi</span><span class="zh-char">被</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shāo</span><span class="zh-char">烧</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">de</span><span class="zh-char">得</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">miàn</span><span class="zh-char">面</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">mù</span><span class="zh-char">目</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">quán</span><span class="zh-char">全</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">fēi</span><span class="zh-char">非</span></span>
+        <span class="zh-punct">。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Entry 7 -->
+  <div class="entry">
+    <span class="bg-sentence" lang="bg">По-късно разбрах, че именно това преживяване — да не бягаш от страшното, а да го гледаш право в очите — оформи начина, по който снимам филми.</span>
+    <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+      <div class="zh-content">
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">hòu</span><span class="zh-char">后</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">lái</span><span class="zh-char">来</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wǒ</span><span class="zh-char">我</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">míng</span><span class="zh-char">明</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">bái</span><span class="zh-char">白</span></span>
+        <span class="zh-punct">，</span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhèng</span><span class="zh-char">正</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shì</span><span class="zh-char">是</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhè</span><span class="zh-char">这</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">ge</span><span class="zh-char">个</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jīng</span><span class="zh-char">经</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">lì</span><span class="zh-char">历</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">sù</span><span class="zh-char">塑</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zào</span><span class="zh-char">造</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">le</span><span class="zh-char">了</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wǒ</span><span class="zh-char">我</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">pāi</span><span class="zh-char">拍</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">diàn</span><span class="zh-char">电</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yǐng</span><span class="zh-char">影</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">de</span><span class="zh-char">的</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">fāng</span><span class="zh-char">方</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shì</span><span class="zh-char">式</span></span>
+        <span class="zh-punct">。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ░░ CHAPTER 3 ░░ -->
+  <div class="chapter-label">Глава III — Пътят към Рашомон · 通往《罗生门》之路</div>
+
+  <!-- Entry 8 -->
+  <div class="entry">
+    <span class="bg-sentence" lang="bg">„Рашомон" спечели Златния лъв на Венеция през 1951 г. и отвори очите на целия свят за съществуването на японското кино.</span>
+    <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+      <div class="zh-content">
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">《</span><span class="zh-char">《</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">luó</span><span class="zh-char">罗</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shēng</span><span class="zh-char">生</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">mén</span><span class="zh-char">门</span></span>
+        <span class="zh-plain">》</span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yú</span><span class="zh-char">于</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yī</span><span class="zh-char">一</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jiǔ</span><span class="zh-char">九</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wǔ</span><span class="zh-char">五</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yī</span><span class="zh-char">一</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">nián</span><span class="zh-char">年</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">huò</span><span class="zh-char">获</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">dé</span><span class="zh-char">得</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wēi</span><span class="zh-char">威</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">ní</span><span class="zh-char">尼</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">sī</span><span class="zh-char">斯</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jīn</span><span class="zh-char">金</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shī</span><span class="zh-char">狮</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jiǎng</span><span class="zh-char">奖</span></span>
+        <span class="zh-punct">，</span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">ràng</span><span class="zh-char">让</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">quán</span><span class="zh-char">全</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shì</span><span class="zh-char">世</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jiè</span><span class="zh-char">界</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">rèn</span><span class="zh-char">认</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shí</span><span class="zh-char">识</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">le</span><span class="zh-char">了</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">rì</span><span class="zh-char">日</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">běn</span><span class="zh-char">本</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">diàn</span><span class="zh-char">电</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yǐng</span><span class="zh-char">影</span></span>
+        <span class="zh-punct">。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Entry 9 -->
+  <div class="entry">
+    <span class="bg-sentence" lang="bg">Когато пишете сценарий, не обяснявайте прекалено много — камерата вижда всичко, а зрителят е по-умен от всяко обяснение.</span>
+    <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+      <div class="zh-content">
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">xiě</span><span class="zh-char">写</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jù</span><span class="zh-char">剧</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">běn</span><span class="zh-char">本</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shí</span><span class="zh-char">时</span></span>
+        <span class="zh-punct">，</span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">bù</span><span class="zh-char">不</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yào</span><span class="zh-char">要</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jiě</span><span class="zh-char">解</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shì</span><span class="zh-char">释</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">tài</span><span class="zh-char">太</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">duō</span><span class="zh-char">多</span></span>
+        <span class="zh-punct">——</span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jìng</span><span class="zh-char">镜</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">tou</span><span class="zh-char">头</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">néng</span><span class="zh-char">能</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">kàn</span><span class="zh-char">看</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">dào</span><span class="zh-char">到</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yī</span><span class="zh-char">一</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">qiè</span><span class="zh-char">切</span></span>
+        <span class="zh-punct">。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Entry 10 -->
+  <div class="entry">
+    <span class="bg-sentence" lang="bg">Аз минус киното се равнява на нула. Целият ми живот е бил само кино — нищо повече, нищо по-малко.</span>
+    <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+      <div class="zh-content">
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wǒ</span><span class="zh-char">我</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jiǎn</span><span class="zh-char">减</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">qù</span><span class="zh-char">去</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">diàn</span><span class="zh-char">电</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yǐng</span><span class="zh-char">影</span></span>
+        <span class="zh-punct">，</span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jiù</span><span class="zh-char">就</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shèng</span><span class="zh-char">剩</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">xià</span><span class="zh-char">下</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">líng</span><span class="zh-char">零</span></span>
+        <span class="zh-punct">。</span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wǒ</span><span class="zh-char">我</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">de</span><span class="zh-char">的</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhěng</span><span class="zh-char">整</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">gè</span><span class="zh-char">个</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">rén</span><span class="zh-char">人</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shēng</span><span class="zh-char">生</span></span>
+        <span class="zh-punct">，</span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhī</span><span class="zh-char">只</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shì</span><span class="zh-char">是</span></span>
+        <span class="zh-space"></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">diàn</span><span class="zh-char">电</span></span>
+        <span class="zh-unit"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">yǐng</span><span class="zh-char">影</span></span>
+        <span class="zh-punct">。</span>
+      </div>
+    </div>
+  </div>
+
+  <button class="reveal-all-btn" onclick="revealAll()">▶▶ Разкрий всички преводи</button>
+
+</main>
+
+<footer>
+  Съдържание по <em>Something Like an Autobiography</em> — Куросава Акира, 1982 г. &nbsp;·&nbsp;
+  Учебен материал за четене Български → Китайски
+</footer>
+
+<script>
+  /* ── FONT SIZE CONTROL ─────────────────────── */
+  function setBgSize(v) {
+    document.documentElement.style.setProperty('--bg-font-size', v + 'px');
+    document.getElementById('bgVal').textContent = v + 'px';
+  }
+  function setZhSize(v) {
+    document.documentElement.style.setProperty('--zh-font-size', v + 'px');
+    document.getElementById('zhVal').textContent = v + 'px';
+  }
+
+  /* ── REVEAL ALL ─────────────────────────────── */
+  function revealAll() {
+    document.querySelectorAll('.chinese-main-spoiler').forEach(el => el.classList.add('revealed'));
+  }
+
+  /* ── STAGGERED ENTRY ANIMATION ─────────────── */
+  document.querySelectorAll('.entry').forEach((el, i) => {
+    el.style.animationDelay = (i * 0.07) + 's';
+  });
+</script>
+</body>
+</html>
