@@ -11,10 +11,9 @@
             --h1-color: #bae6fd;
             --bg-text-color: #e0f2fe;
             --zh-text-color: #f8fafc;
+            --pinyin-revealed: #22c55e;
             --accent-blue: #38bdf8;
-            --pinyin-idle: #1e293b; /* Съвпада с фона на спойлера */
-            --pinyin-revealed: #22c55e; /* Зелено при разкриване */
-            --pinyin-text-color: #94a3b8; /* Сив цвят за самия текст */
+            --spoiler-bg: #1e293b;
         }
 
         body {
@@ -37,116 +36,192 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 950px;
             width: 100%;
         }
 
         .entry {
             border-left: 5px solid var(--accent-blue);
-            padding: 20px 30px;
-            margin-bottom: 40px;
-            background: rgba(255, 255, 255, 0.02);
+            padding: 25px 35px;
+            margin-bottom: 45px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 0 15px 15px 0;
         }
 
         .bg-sentence {
             font-size: 22px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             display: block;
         }
 
-        .zh-sentence {
+        /* Първичен спойлер: Целият китайски контейнер */
+        .chinese-main-spoiler {
+            background-color: var(--spoiler-bg);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            min-height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chinese-main-spoiler::before {
+            content: "Кликни за превод";
+            font-size: 14px;
+            color: var(--accent-blue);
+            opacity: 0.7;
+        }
+
+        .chinese-main-spoiler.revealed {
+            background: rgba(15, 23, 42, 0.6);
+            cursor: default;
+            display: block;
+        }
+
+        .chinese-main-spoiler.revealed::before {
+            display: none;
+        }
+
+        /* Китайски текст (скрит докато не се разкрие основния спойлер) */
+        .zh-content {
+            display: none;
             font-family: 'Kaiti', 'STKaiti', serif;
             font-size: 26px;
             color: var(--zh-text-color);
-            background: rgba(15, 23, 42, 0.6);
-            padding: 15px;
-            border-radius: 12px;
-            display: block;
         }
 
-        /* ПИНГИН СТИЛИЗАЦИЯ */
-        .pinyin-spoiler {
+        .chinese-main-spoiler.revealed .zh-content {
+            display: inline;
+        }
+
+        /* Вторичен спойлер: Пининът вътре в текста */
+        .pinyin-inline-spoiler {
             display: inline-block;
-            background-color: var(--pinyin-idle);
-            color: var(--pinyin-idle); /* Скрит по подразбиране */
-            cursor: pointer;
-            border-radius: 4px;
+            background-color: #0f172a;
+            color: #0f172a; /* Скрит цвят */
+            font-family: 'Calibri', sans-serif !important;
+            font-size: 17.6px;
             padding: 0 6px;
-            
-            /* Шрифт и размер */
-            font-family: 'Calibri', 'Segoe UI', sans-serif !important;
-            font-size: 17.6px; 
-            
-            transition: all 0.25s ease;
-            user-select: none;
             margin: 0 2px;
-            vertical-align: baseline;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            vertical-align: middle;
+            user-select: none;
         }
 
-        .pinyin-spoiler.revealed {
+        .pinyin-inline-spoiler.revealed {
             background-color: transparent;
             color: var(--pinyin-revealed);
-            font-weight: bold;
+        }
+
+        .pinyin-inline-spoiler:hover {
+            border: 1px solid var(--accent-blue);
         }
     </style>
 </head>
 <body>
 
-    <h1>Cloud Atlas: Сонми-451</h1>
+    <h1>Облакът Атлас: Сонми-451</h1>
 
     <div class="container">
+        
+        <!-- Сегмент 1 -->
         <div class="entry">
-            <span class="bg-sentence">В дистопичното бъдеще на Нео-Сеул, Сонми-451 е изкуствено създаден клонинг, работещ в ресторант.</span>
-            <span class="zh-sentence">在未来新首尔的反乌托邦 (fǎn wū tuō bāng) 世界中，星美-451 是一个在餐厅工作的克隆人。</span>
+            <span class="bg-sentence">В едно дистопично бъдеще, Сонми-451 е изкуствено създаден работник в ресторант за бързо хранене.</span>
+            <div class="chinese-main-spoiler" onclick="revealMain(this)">
+                <div class="zh-content">
+                    在未来一个反乌托邦 <span class="pinyin-inline-spoiler" onclick="revealPinyin(event, this)">(fǎn wū tuō bāng)</span> 的世界中，星美-451 是一个在快餐店工作的人造人。
+                </div>
+            </div>
         </div>
 
+        <!-- Сегмент 2 -->
         <div class="entry">
-            <span class="bg-sentence">Нейното ежедневие е тежък труд и пълно подчинение на корпоративните закони.</span>
-            <span class="zh-sentence">她的日常生活是繁重的劳动和对公司法律的完全顺从 (shùn cóng)。</span>
+            <span class="bg-sentence">Тя прекарва дните си в абсолютно подчинение, без да познава концепцията за свобода.</span>
+            <div class="chinese-main-spoiler" onclick="revealMain(this)">
+                <div class="zh-content">
+                    她在绝对的顺从 <span class="pinyin-inline-spoiler" onclick="revealPinyin(event, this)">(shùn cóng)</span> 中度过每一天，完全不了解自由 <span class="pinyin-inline-spoiler" onclick="revealPinyin(event, this)">(zì yóu)</span> 的概念。
+                </div>
+            </div>
         </div>
 
+        <!-- Сегмент 3 -->
         <div class="entry">
-            <span class="bg-sentence">Постепенно тя започва да развива съзнание и да разбира природата на своето робство.</span>
-            <span class="zh-sentence">逐渐地，她开始发展意识 (yì shí) 并理解自己被奴役 (nú yì) 的本质。</span>
+            <span class="bg-sentence">Всичко се променя, когато тя среща Хе-Джу Чанг, който й помага да развие собствено съзнание.</span>
+            <div class="chinese-main-spoiler" onclick="revealMain(this)">
+                <div class="zh-content">
+                    当她遇到张海柱时，一切都改变了，他帮助她发展了自我意识 <span class="pinyin-inline-spoiler" onclick="revealPinyin(event, this)">(zì wǒ yì shí)</span>。
+                </div>
+            </div>
         </div>
 
+        <!-- Сегмент 4 -->
         <div class="entry">
-            <span class="bg-sentence">Бунтовникът Хе-Джу Чанг я освобождава и ѝ показва ужасяващата истина за нейния свят.</span>
-            <span class="zh-sentence">反抗者张海柱解救了她，并向她展示了关于她世界的恐怖真相 (zhēn xiàng)。</span>
+            <span class="bg-sentence">Сонми открива, че нейните посестрими не се "въздигат", а се превръщат в храна за останалите клонинги.</span>
+            <div class="chinese-main-spoiler" onclick="revealMain(this)">
+                <div class="zh-content">
+                    星美发现，她的同伴们并没有“升天”，而是被回收 <span class="pinyin-inline-spoiler" onclick="revealPinyin(event, this)">(huí shōu)</span> 成了其他克隆人的食物。
+                </div>
+            </div>
         </div>
 
+        <!-- Сегмент 5 -->
         <div class="entry">
-            <span class="bg-sentence">Сонми научава, че клонираните работници се рециклират като храна за самите тях.</span>
-            <span class="zh-sentence">星美得知克隆工人们被回收 (huí shōu) 成了给他们自己食用的食物。</span>
+            <span class="bg-sentence">Тази ужасяваща истина я подтиква да се присъедини към съпротивата и да напише своите Откровения.</span>
+            <div class="chinese-main-spoiler" onclick="revealMain(this)">
+                <div class="zh-content">
+                    这个恐怖的真相 <span class="pinyin-inline-spoiler" onclick="revealPinyin(event, this)">(zhēn xiàng)</span> 促使她加入反抗军，并写下了她的《启示录》。
+                </div>
+            </div>
         </div>
 
+        <!-- Сегмент 6 -->
         <div class="entry">
-            <span class="bg-sentence">Тя решава да състави „Откровенията“, за да събуди човечеството от неговото безразличие.</span>
-            <span class="zh-sentence">她决定编写《启示录》(qǐ shì lù)，以唤醒人类的冷漠 (lěng mò)。</span>
+            <span class="bg-sentence">Тя решава да излъчи своето послание до целия свят, знаейки че това ще доведе до нейната смърт.</span>
+            <div class="chinese-main-spoiler" onclick="revealMain(this)">
+                <div class="zh-content">
+                    她决定向全世界播送 <span class="pinyin-inline-spoiler" onclick="revealPinyin(event, this)">(bō sòng)</span> 她的信息，尽管她知道这会导致她的死亡。
+                </div>
+            </div>
         </div>
 
+        <!-- Сегмент 7 -->
         <div class="entry">
-            <span class="bg-sentence">Въпреки че знае, че ще бъде екзекутирана, тя предава своето послание чрез глобално излъчване.</span>
-            <span class="zh-sentence">尽管她知道自己会被处决 (chǔ jué)，她还是通过全球广播传递了她的信息。</span>
+            <span class="bg-sentence">Нейният акт на бунт се превръща в свещен символ за бъдещите поколения след Срива.</span>
+            <div class="chinese-main-spoiler" onclick="revealMain(this)">
+                <div class="zh-content">
+                    她的反抗行为成为了大衰落后未来几代人的神圣 <span class="pinyin-inline-spoiler" onclick="revealPinyin(event, this)">(shèng jié)</span> 象征。
+                </div>
+            </div>
         </div>
 
+        <!-- Сегмент 8 -->
         <div class="entry">
-            <span class="bg-sentence">Нейната саможертва я превръща в богиня за племената, оцелели след Големия срив.</span>
-            <span class="zh-sentence">她的自我牺牲 (xī shēng) 使她成为大衰落后幸存部落眼中的女神。</span>
+            <span class="bg-sentence">Историята на Сонми доказва, че идеите не могат да бъдат убити от тиранията.</span>
+            <div class="chinese-main-spoiler" onclick="revealMain(this)">
+                <div class="zh-content">
+                    星美的故事证明了思想是无法被暴政 <span class="pinyin-inline-spoiler" onclick="revealPinyin(event, this)">(bào zhèng)</span> 杀死的。
+                </div>
+            </div>
         </div>
 
-        <div class="entry">
-            <span class="bg-sentence">Нейният глас доказва, че идеите са вечни и не могат да бъдат унищожени от тиранията.</span>
-            <span class="zh-sentence">她的声音证明了思想是永恒的，不能被暴政 (bào zhèng) 摧毁。</span>
-        </div>
     </div>
 
     <script>
-        document.querySelectorAll('.pinyin-spoiler').forEach(element => {
-            element.addEventListener('click', function() {
-                this.classList.toggle('revealed');
-            });
-        });
+        function revealMain(element) {
+            if (!element.classList.contains('revealed')) {
+                element.classList.add('revealed');
+            }
+        }
+
+        function revealPinyin(event, element) {
+            // Спираме събитието да не се предава на родителя (основния спойлер)
+            event.stopPropagation();
+            element.classList.toggle('revealed');
+        }
     </script>
 
 </body>
