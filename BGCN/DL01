@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сутрешен хаос · 晨间混乱 — Ежедневен битов език</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --border: #38bdf8;
+            --border-dim: #1c3f57;
+            --text-bg: #e0f2fe;
+            --text-muted: #7a9ab8;
+            --accent: #38bdf8;
+            --gold: #e2a84b;
+            --pinyin-cover: #9333ea;
+            --pinyin-green: #22c55e;
+            
+            /* Динамични размери */
+            --bg-fs: 20px;
+            --zh-fs: 28px;
+            --pin-fs: calc(var(--zh-fs) * 0.55);
+            
+            /* Шрифтови стекове */
+            --font-bg: 'Manrope', sans-serif;
+            --font-zh: 'STKaiti', 'KaiTi', '楷体', 'ZCOOL XiaoWei', serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg);
+            color: var(--text-bg);
+            font-family: var(--font-bg);
+            font-variant-ligatures: normal;
+            font-feature-settings: "locl" 1;
+            font-language-override: "BGR";
+            min-height: 100vh;
+            padding-bottom: 80px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ══ HEADER ═══════════════════════════════════════ */
+        .page-header {
+            text-align: center;
+            padding: 60px 24px;
+            background: linear-gradient(180deg, #080f1e 0%, var(--bg) 100%);
+            border-bottom: 1px solid var(--border-dim);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        .zh-head {
+            display: block;
+            font-family: var(--font-zh);
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-top: 10px;
+            letter-spacing: 0.2em;
+        }
+
+        .subtext {
+            margin: 20px auto 0;
+            max-width: 650px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ══ CONTROLS ═════════════════════════════════════ */
+        .controls-panel {
+            background: #131f33;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            border-bottom: 1px solid var(--border-dim);
+        }
+
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .slider-group label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+        }
+
+        input[type=range] {
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+
+        /* ══ CONTENT ══════════════════════════════════════ */
+        .content-wrap {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .chapter-label {
+            color: var(--gold);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin: 60px 0 20px;
+            border-bottom: 1px solid #2d445d;
+            padding-bottom: 10px;
+        }
+        .chapter-label:first-of-type { margin-top: 0; }
+
+        .entry {
+            margin-bottom: 45px;
+            animation: fadeIn 0.6s ease both;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .bg-sentence {
+            font-size: var(--bg-fs);
+            line-height: 1.7;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* ══ SPOILERS ═════════════════════════════════════ */
+        .chinese-main-spoiler {
+            background: var(--surface);
+            border: 1.5px solid var(--border-dim);
+            border-radius: 12px;
+            padding: 25px 20px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .chinese-main-spoiler:hover {
+            border-color: var(--border);
+            background: var(--surface-hover);
+        }
+
+        .chinese-main-spoiler::before {
+            content: "▶ Покажи китайски превод";
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--surface);
+            color: var(--accent);
+            font-weight: 600;
+            z-index: 10;
+            border-radius: 11px;
+        }
+
+        .chinese-main-spoiler.revealed::before { display: none; }
+
+        .zh-content {
+            display: none;
+            font-family: var(--font-zh);
+            font-size: var(--zh-fs);
+            color: #fff;
+            line-height: 1; 
+        }
+
+        .chinese-main-spoiler.revealed .zh-content { 
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end; 
+        }
+
+        /* УНИФИЦИРАН БЛОК ЗА ЙЕРОГЛИФ (С ИЛИ БЕЗ ПИНИН) */
+        .zh-node {
+            display: inline-flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            margin: 0 1px 16px 1px;
+        }
+
+        .zh-char { 
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        /* Зона за Пинин (с фиксирана височина за стабилност) */
+        .pinyin-box {
+            height: calc(var(--pin-fs) + 12px);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .pinyin-inline-spoiler {
+            font-family: 'Manrope', sans-serif;
+            font-size: var(--pin-fs);
+            background: var(--pinyin-cover);
+            color: transparent;
+            padding: 1px 5px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .pinyin-inline-spoiler.revealed {
+            background: transparent;
+            color: var(--pinyin-green);
+        }
+
+        /* Препинателни знаци */
+        .zh-punct {
+            margin-bottom: 16px;
+            padding: 0 2px;
+            color: var(--text-muted);
+            font-size: var(--zh-fs);
+        }
+
+        .wgap { width: 0.15em; display: inline-block; }
+    </style>
+</head>
+<body>
+
+<header class="page-header">
+    <h1>Сутрешен хаос и битови битки</h1>
+    <span class="zh-head">晨间混乱与日常琐事</span>
+    <p class="subtext">
+        Практически речник за оцеляване в ежедневието. Фокус върху домашните задължения, кухненските неволи и онези дребни, но ключови думи, които рядко попадат в учебниците.
+    </p>
+</header>
+
+<div class="controls-panel">
+    <div class="slider-group">
+        <label>Български</label>
+        <input type="range" id="bgSlider" min="16" max="42" value="20" oninput="updateSize('--bg-fs', this.value)">
+    </div>
+    <div class="slider-group">
+        <label>Китайски</label>
+        <input type="range" id="zhSlider" min="20" max="52" value="28" oninput="updateSize('--zh-fs', this.value)">
+    </div>
+</div>
+
+<main class="content-wrap">
+    
+    <div class="chapter-label">Глава I — Събуждане и препятствия · 醒来与障碍</div>
+
+    <!-- 1 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">Алармата се включи безмилостно в 7:00, но аз по навик ударих бутона за дрямка поне три пъти.</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node">
+                    <div class="zh-char">闹钟</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">nàozhōng</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">在七点</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">无情地</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">wúqíng de</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">响起</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">xiǎngqǐ</span></div>
+                </div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">但我</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">习惯性地</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">xíguànxìng de</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">按了至少三次</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">贪睡按钮</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">tānshuì ànniǔ</span></div>
+                </div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">Когато най-накрая станах, се спънах в килима и си ударих малкия пръст на крака в ръба на нощното шкафче.</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node"><div class="zh-char">当我终于起床时</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">被</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">地毯</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">dìtǎn</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">绊倒了</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">bàndǎo le</span></div>
+                </div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node">
+                    <div class="zh-char">小脚趾</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">xiǎojiǎozhǐ</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">还</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">撞到了</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhuàngdào le</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">床头柜的</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">chuángtóuguì de</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">边缘</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">biānyuán</span></div>
+                </div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chapter-label">Глава II — Кухненски битки · 厨房作战</div>
+
+    <!-- 3 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">Дотътрих се до кухнята, търсейки спасение в кафемашината, но открих, че резервоарът за вода е празен.</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node"><div class="zh-char">我</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">步履蹒跚地</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">bùlǚ pánshān de</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">走到厨房</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">想在</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">咖啡机里</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">kāfēijī lǐ</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">寻找</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">救赎</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">jiùshú</span></div>
+                </div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">却发现</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">水箱</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shuǐxiāng</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">是空的</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">Докато наливах водата, половината се разля върху претрупания плот и трябваше да попивам с домакинска хартия.</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node"><div class="zh-char">倒水时</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">一半的水</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">洒在了</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">sǎ zài le</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">杂乱的</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">záluàn de</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">台面上</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">táimiàn shàng</span></div>
+                </div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">我只好用</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">厨房纸巾</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">chúfáng zhǐjīn</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">擦拭</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">cāshì</span></div>
+                </div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chapter-label">Глава III — Домакински задължения · 家务琐事</div>
+
+    <!-- 5 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">След кафето дойде време за прането: трябваше внимателно да сортирам белите от цветните дрехи.</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node"><div class="zh-char">喝完咖啡后到了洗衣服的时间</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">：</div>
+                <div class="zh-node"><div class="zh-char">我必须</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">仔细地</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zǐxì de</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">将白衣和彩衣</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">分拣</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">fēnjiǎn</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">开来</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">Оказа се, че съм забравил да купя перилен препарат, затова използвах остатъка от едни стари капсули за пране.</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node"><div class="zh-char">结果发现我忘了买</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">洗衣液</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">xǐyīyè</span></div>
+                </div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">所以只好把</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">剩下来的</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">shèngxià de</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">一些旧</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">洗衣凝珠</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">xǐyī níngzhū</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">用掉</div><div class="pinyin-box"></div></div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="entry">
+        <span class="bg-sentence" lang="bg">Накрая изхвърлих боклука, като старателно разделих пластмасата и картона в контейнерите за рециклиране.</span>
+        <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+            <div class="zh-content">
+                <div class="zh-node"><div class="zh-char">最后我出门</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">倒垃圾</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">dào lājī</span></div>
+                </div>
+                <div class="zh-punct">，</div>
+                <div class="zh-node"><div class="zh-char">将</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">塑料</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">sùliào</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">和</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">纸板</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">zhǐbǎn</span></div>
+                </div>
+                <div class="zh-node">
+                    <div class="zh-char">认认真真地</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">rènrèn zhēnzhēn de</span></div>
+                </div>
+                <div class="zh-node"><div class="zh-char">分到了</div><div class="pinyin-box"></div></div>
+                <div class="zh-node">
+                    <div class="zh-char">回收桶里</div>
+                    <div class="pinyin-box"><span class="pinyin-inline-spoiler" onclick="event.stopPropagation();this.classList.toggle('revealed')">huíshōu tǒng lǐ</span></div>
+                </div>
+                <div class="zh-punct">。</div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<script>
+    function updateSize(prop, val) {
+        document.documentElement.style.setProperty(prop, val + 'px');
+    }
+</script>
+
+</body>
+</html>
