@@ -449,7 +449,24 @@
         document.documentElement.style.setProperty('--zh-font-size', size + 'px');
         zhValue.textContent = size + ' px (пинин ≈ 60%)';
       }
+      function revealMain(el) {
+        el.classList.add('revealed');
+      }
 
+      function revealPinyin(el) {
+        el.stopPropagation && el.stopPropagation();
+        var spoiler = el.querySelector('.pinyin-inline-spoiler');
+        if (spoiler) spoiler.classList.add('revealed');
+      }
+      
+      document.querySelectorAll('.zh-unit').forEach(function(unit) {
+        unit.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var spoiler = unit.querySelector('.pinyin-inline-spoiler');
+          if (spoiler) spoiler.classList.add('revealed');
+        });
+      });
+      
       bgSlider.addEventListener('input', updateBgFont);
       zhSlider.addEventListener('input', updateZhFont);
 
