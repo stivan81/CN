@@ -13,12 +13,10 @@
       --zh-font-size: 25px;
       --pinyin-scale: 0.6;
       --font-bg: "Manrope", "Aptos", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      --font-zh: "STKaiti", "KaiTi", "楷体", "Microsoft YaHei", "PingFang SC", serif;
+      --font-zh: "LXGW WenKai", "STKaiti", "KaiTi", "楷体", "Microsoft YaHei", "PingFang SC", serif;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     html[lang="bg"] {
       font-variant-ligatures: common-ligatures;
@@ -31,9 +29,8 @@
       background-color: #0f172a;
       color: #e0f2fe;
       font-family: var(--font-bg);
-      font-variant-ligatures: common-ligatures;
-      font-feature-settings: "locl" 1;
       line-height: 1.6;
+      padding-bottom: 80px;
     }
 
     h1 {
@@ -97,11 +94,38 @@
       border: 1px solid #1e293b;
     }
 
-    .bg-sentence {
-      display: block;
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
       margin-bottom: 10px;
+    }
+
+    .bg-sentence {
+      margin: 0;
       font-size: var(--bg-font-size);
       color: #e0f2fe;
+    }
+
+    .tts-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 24px;
+      opacity: 0.6;
+      transition: opacity 0.2s, transform 0.1s;
+      padding: 4px;
+      border-radius: 50%;
+    }
+
+    .tts-btn:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    
+    .tts-btn:active {
+      transform: scale(0.95);
     }
 
     .chinese-main-spoiler {
@@ -112,6 +136,13 @@
       border: 1px solid #38bdf8;
       cursor: pointer;
       overflow: hidden;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    
+    .chinese-main-spoiler:focus-visible {
+      border-color: #9333ea;
+      box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.4);
     }
 
     .chinese-main-spoiler::before {
@@ -141,13 +172,11 @@
       z-index: 1;
       font-size: var(--zh-font-size);
       color: #e5e7eb;
-      line-height: 1.9;
+      line-height: 2.2;
     }
 
     .zh-content[lang="zh-Hans"] {
       font-family: var(--font-zh);
-      font-language-override: normal;
-      font-feature-settings: normal;
     }
 
     .zh-unit {
@@ -156,6 +185,14 @@
       align-items: center;
       justify-content: flex-start;
       margin: 0 2px;
+      outline: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    
+    .zh-unit:focus-visible {
+      box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.6);
+      background-color: rgba(147, 51, 234, 0.1);
     }
 
     .pinyin-inline-spoiler {
@@ -165,26 +202,16 @@
       border-radius: 4px;
       background-color: #9333ea;
       color: transparent;
-      cursor: pointer;
       font-size: calc(var(--zh-font-size) * var(--pinyin-scale));
-      line-height: 1.1;
+      line-height: 1.2;
       user-select: none;
       white-space: nowrap;
       transition: background-color 0.15s ease, color 0.15s ease;
     }
 
-    .pinyin-inline-spoiler::before {
-      content: "···";
-      color: #e5e7eb;
-    }
-
     .pinyin-inline-spoiler.revealed {
       background-color: transparent;
       color: #22c55e;
-    }
-
-    .pinyin-inline-spoiler.revealed::before {
-      content: "";
     }
 
     .zh-char {
@@ -193,19 +220,95 @@
       color: #e5e7eb;
     }
 
-    .hint {
-      margin-top: 6px;
-      font-size: 12px;
-      color: #64748b;
+    #glossary-section {
+      display: none;
+      margin-top: 40px;
+      padding: 24px;
+      max-width: 900px;
+      border-radius: 12px;
+      background-color: #0f172a;
+      border: 1px solid #334155;
+    }
+    
+    #glossary-section h2 {
+      margin-top: 0;
+      color: #38bdf8;
+      font-size: 22px;
+    }
+
+    .glossary-controls {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      background-color: #1e293b;
+      color: #e0f2fe;
+      border: 1px solid #475569;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+
+    .btn:hover { background-color: #334155; }
+    .btn.primary { background-color: #0284c7; border-color: #0369a1; }
+    .btn.primary:hover { background-color: #0369a1; }
+
+    #glossary-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    #glossary-list li {
+      padding: 10px 14px;
+      background-color: #020617;
+      border-radius: 8px;
+      border: 1px solid #1e293b;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .gl-zh { font-family: var(--font-zh); font-size: 20px; color: #e5e7eb; min-width: 80px;}
+    .gl-py { color: #22c55e; font-size: 15px; min-width: 100px; }
+    .gl-bg { color: #94a3b8; font-size: 15px; }
+
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background-color: #22c55e;
+      color: #020617;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 1000;
+    }
+    #toast.show {
+      transform: translateY(0);
+      opacity: 1;
     }
   </style>
 </head>
 <body>
   <h1>Интерактивно упражнение за четене: Битови вещи и ежедневни действия</h1>
   <div class="subtext">
-    Текстът описва как един студент постепенно организира малкия си апартамент, като подрежда вещи, ремонтира дребни неща,
-    чете инструкции и изгражда навици за по-ефективно учене и живот. Преводът е на ниво поне HSK5, с подбрани по-редки думи,
-    за които можеш селективно да разкриваш пинин.
+    Текстът описва как един студент постепенно организира малкия си апартамент. 
+    Всички думи на ниво <strong>HSK 4, 5 и 6+</strong> са маркирани. Кликни върху тях за <strong>toggle</strong> на пинина. Разкритите думи се добавят в речника най-отдолу.
   </div>
 
   <div class="controls">
@@ -222,220 +325,253 @@
   </div>
 
   <div class="entries">
- 
-  <!-- 1 -->
-  <div class="entry">
-    <p class="bg-sentence">Иван реши да прибере апартамента си след дълга седмица на небрежност.</p>
-    <div class="chinese-main-spoiler" onclick="revealMain(this)">
-      <div class="zh-content" lang="zh-Hans">
-        <span>伊万决定在</span>
-        <span>疏于</span>
-        <span>打理</span>
-        <span>的漫长一周后</span>
-        <span>整理</span>
-        <span>他的</span>
-        <span>公寓。</span>
+    <!-- 1 -->
+    <div class="entry">
+      <div class="entry-header">
+        <p class="bg-sentence">Иван реши да прибере апартамента си след дълга седмица на небрежност.</p>
+        <button class="tts-btn" data-zh="伊万决定在疏于打理的漫长一周后整理他的公寓。" title="Изслушай">🔊</button>
+      </div>
+      <div class="chinese-main-spoiler" onclick="revealMain(this)">
+        <div class="zh-content" lang="zh-Hans">
+          <span>伊万</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="да реши"> <span class="pinyin-inline-spoiler">juédìng</span> <span class="zh-char">决定</span> </div>
+          <span>在</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="да пренебрегва"> <span class="pinyin-inline-spoiler">shūyú</span> <span class="zh-char">疏于</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="да поддържа / да се грижи за"> <span class="pinyin-inline-spoiler">dǎlǐ</span> <span class="zh-char">打理</span> </div>
+          <span>的</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="дълъг / продължителен"> <span class="pinyin-inline-spoiler">màncháng</span> <span class="zh-char">漫长</span> </div>
+          <span>一周后</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="да подреди / да организира"> <span class="pinyin-inline-spoiler">zhěnglǐ</span> <span class="zh-char">整理</span> </div>
+          <span>他的</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="апартамент"> <span class="pinyin-inline-spoiler">gōngyù</span> <span class="zh-char">公寓</span> </div>
+          <span>。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="entry">
+      <div class="entry-header">
+        <p class="bg-sentence">Първото нещо, което направи, беше да сортира всички кабели по вид и дължина.</p>
+        <button class="tts-btn" data-zh="他做的第一件事是按种类和长度将所有的电线分类整理。" title="Изслушай">🔊</button>
+      </div>
+      <div class="chinese-main-spoiler" onclick="revealMain(this)">
+        <div class="zh-content" lang="zh-Hans">
+          <span>他做的第一件事是按</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="вид / категория"> <span class="pinyin-inline-spoiler">zhǒnglèi</span> <span class="zh-char">种类</span> </div>
+          <span>和</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="дължина"> <span class="pinyin-inline-spoiler">chángdù</span> <span class="zh-char">长度</span> </div>
+          <span>将</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="всички"> <span class="pinyin-inline-spoiler">suǒyǒu de</span> <span class="zh-char">所有的</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="електрически кабели"> <span class="pinyin-inline-spoiler">diànxiàn</span> <span class="zh-char">电线</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="да класифицира / сортира"> <span class="pinyin-inline-spoiler">fēnlèi</span> <span class="zh-char">分类</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="да подреди / да организира"> <span class="pinyin-inline-spoiler">zhěnglǐ</span> <span class="zh-char">整理</span> </div>
+          <span>。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="entry">
+      <div class="entry-header">
+        <p class="bg-sentence">Той намери стара лента и опъна зарядните кабели на телефоните с нея.</p>
+        <button class="tts-btn" data-zh="他找到了一卷旧胶带，用它把手机充电线绑在一起。" title="Изслушай">🔊</button>
+      </div>
+      <div class="chinese-main-spoiler" onclick="revealMain(this)">
+        <div class="zh-content" lang="zh-Hans">
+          <span>他找到了 一</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="ролка (класификатор)"> <span class="pinyin-inline-spoiler">juǎn</span> <span class="zh-char">卷</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="стар"> <span class="pinyin-inline-spoiler">jiù</span> <span class="zh-char">旧</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="лепяща лента / тиксо"> <span class="pinyin-inline-spoiler">jiāodài</span> <span class="zh-char">胶带</span> </div>
+          <span>，用它把手机</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="зарядни кабели"> <span class="pinyin-inline-spoiler">chōngdiànxiàn</span> <span class="zh-char">充电线</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="завързвам / стягам"> <span class="pinyin-inline-spoiler">bǎng</span> <span class="zh-char">绑</span> </div>
+          <span>在一起。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="entry">
+      <div class="entry-header">
+        <p class="bg-sentence">После смени крушката на настолната лампа в кабинета, защото светлината беше твърде слаба.</p>
+        <button class="tts-btn" data-zh="接着，他更换了书房台灯的灯泡，因为光线太暗淡了。" title="Изслушай">🔊</button>
+      </div>
+      <div class="chinese-main-spoiler" onclick="revealMain(this)">
+        <div class="zh-content" lang="zh-Hans">
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="след това"> <span class="pinyin-inline-spoiler">jiēzhe</span> <span class="zh-char">接着</span> </div>
+          <span>，他</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="да смени"> <span class="pinyin-inline-spoiler">gēnghuàn</span> <span class="zh-char">更换</span> </div>
+          <span>了</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="кабинет / работна стая"> <span class="pinyin-inline-spoiler">shūfáng</span> <span class="zh-char">书房</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="настолна лампа"> <span class="pinyin-inline-spoiler">táidēng</span> <span class="zh-char">台灯</span> </div>
+          <span>的</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="крушка"> <span class="pinyin-inline-spoiler">dēngpào</span> <span class="zh-char">灯泡</span> </div>
+          <span>，因为</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="светлина"> <span class="pinyin-inline-spoiler">guāngxiàn</span> <span class="zh-char">光线</span> </div>
+          <span>太</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="слаб / тъмен (за светлина)"> <span class="pinyin-inline-spoiler">àndàn</span> <span class="zh-char">暗淡</span> </div>
+          <span>了。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="entry">
+      <div class="entry-header">
+        <p class="bg-sentence">Иван залепи етикети на всички чекмеджета в бюрото с малки самозалепващи листчета.</p>
+        <button class="tts-btn" data-zh="伊万用小便签纸给书桌的所有抽屉贴上了标签。" title="Изслушай">🔊</button>
+      </div>
+      <div class="chinese-main-spoiler" onclick="revealMain(this)">
+        <div class="zh-content" lang="zh-Hans">
+          <span>伊万用小</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="лепящи листчета"> <span class="pinyin-inline-spoiler">biānqiān</span> <span class="zh-char">便签</span> </div>
+          <span>纸给</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="бюро"> <span class="pinyin-inline-spoiler">shūzhuō</span> <span class="zh-char">书桌</span> </div>
+          <span>的</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="всички"> <span class="pinyin-inline-spoiler">suǒyǒu</span> <span class="zh-char">所有</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="чекмедже"> <span class="pinyin-inline-spoiler">chōuti</span> <span class="zh-char">抽屉</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="да залепя"> <span class="pinyin-inline-spoiler">tiē</span> <span class="zh-char">贴</span> </div>
+          <span>上了</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="етикет"> <span class="pinyin-inline-spoiler">biāoqiān</span> <span class="zh-char">标签</span> </div>
+          <span>。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="entry">
+      <div class="entry-header">
+        <p class="bg-sentence">В кухнята подреди чиниите, паниците и тенджерите по размер върху рафтовете.</p>
+        <button class="tts-btn" data-zh="在厨房里，他按大小将盘子、碗和锅具整齐摆放在格子架上。" title="Изслушай">🔊</button>
+      </div>
+      <div class="chinese-main-spoiler" onclick="revealMain(this)">
+        <div class="zh-content" lang="zh-Hans">
+          <span>在</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="кухня"> <span class="pinyin-inline-spoiler">chúfáng</span> <span class="zh-char">厨房</span> </div>
+          <span>里，他按</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="размер"> <span class="pinyin-inline-spoiler">dàxiǎo</span> <span class="zh-char">大小</span> </div>
+          <span>将</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="чиния"> <span class="pinyin-inline-spoiler">pánzi</span> <span class="zh-char">盘子</span> </div>
+          <span>、</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="купа / паница"> <span class="pinyin-inline-spoiler">wǎn</span> <span class="zh-char">碗</span> </div>
+          <span>和</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="кухненски съдове (тенджери)"> <span class="pinyin-inline-spoiler">guōjù</span> <span class="zh-char">锅具</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="подредено / спретнато"> <span class="pinyin-inline-spoiler">zhěngqí</span> <span class="zh-char">整齐</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="да нареди / да постави"> <span class="pinyin-inline-spoiler">bǎifàng</span> <span class="zh-char">摆放</span> </div>
+          <span>在</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="отделение / рафтче"> <span class="pinyin-inline-spoiler">gézi</span> <span class="zh-char">格子</span> </div>
+          <span>架上。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="entry">
+      <div class="entry-header">
+        <p class="bg-sentence">Той забеляза, че ситото и белачката за картофи липсват, и реши да ги намери по-късно.</p>
+        <button class="tts-btn" data-zh="他发现漏勺和土豆剥皮器不见了，决定稍后再找。" title="Изслушай">🔊</button>
+      </div>
+      <div class="chinese-main-spoiler" onclick="revealMain(this)">
+        <div class="zh-content" lang="zh-Hans">
+          <span>他</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="откри / забеляза"> <span class="pinyin-inline-spoiler">fāxiàn</span> <span class="zh-char">发现</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="сито / решетъчна лъжица"> <span class="pinyin-inline-spoiler">lòusháo</span> <span class="zh-char">漏勺</span> </div>
+          <span>和</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="картоф"> <span class="pinyin-inline-spoiler">tǔdòu</span> <span class="zh-char">土豆</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="белачка"> <span class="pinyin-inline-spoiler">bōpíqì</span> <span class="zh-char">剥皮器</span> </div>
+          <span>不见了，</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="реши"> <span class="pinyin-inline-spoiler">juédìng</span> <span class="zh-char">决定</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="по-късно"> <span class="pinyin-inline-spoiler">shāohòu</span> <span class="zh-char">稍后</span> </div>
+          <span>再找。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="entry">
+      <div class="entry-header">
+        <p class="bg-sentence">Докато работеше, Иван слушаше подкаст за продуктивност и ефективно управление на времето.</p>
+        <button class="tts-btn" data-zh="伊万一边工作，一边收听关于产出率与高效时间管理的播客。" title="Изслушай">🔊</button>
+      </div>
+      <div class="chinese-main-spoiler" onclick="revealMain(this)">
+        <div class="zh-content" lang="zh-Hans">
+          <span>伊万一边工作，一边</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="да слушам (радио/аудио)"> <span class="pinyin-inline-spoiler">shōutīng</span> <span class="zh-char">收听</span> </div>
+          <span>关于</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="продуктивност"> <span class="pinyin-inline-spoiler">chǎnchūlǜ</span> <span class="zh-char">产出率</span> </div>
+          <span>与</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="високо ефективен"> <span class="pinyin-inline-spoiler">gāoxiào</span> <span class="zh-char">高效</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="управление на времето"> <span class="pinyin-inline-spoiler">shíjiān guǎnlǐ</span> <span class="zh-char">时间管理</span> </div>
+          <span>的</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="подкаст"> <span class="pinyin-inline-spoiler">bōkè</span> <span class="zh-char">播客</span> </div>
+          <span>。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="entry">
+      <div class="entry-header">
+        <p class="bg-sentence">Накрая написа списък за пазаруване, включващ препарат за съдове, хартиени кърпи и торбички за боклук.</p>
+        <button class="tts-btn" data-zh="最后，他写了一份购物清单，上面列了洗碗精、纸巾和垃圾袋。" title="Изслушай">🔊</button>
+      </div>
+      <div class="chinese-main-spoiler" onclick="revealMain(this)">
+        <div class="zh-content" lang="zh-Hans">
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="накрая"> <span class="pinyin-inline-spoiler">zuìhòu</span> <span class="zh-char">最后</span> </div>
+          <span>，他写了一份</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="пазаруване"> <span class="pinyin-inline-spoiler">gòuwù</span> <span class="zh-char">购物</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="списък"> <span class="pinyin-inline-spoiler">qīngdān</span> <span class="zh-char">清单</span> </div>
+          <span>，上面列了</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="препарат за съдове"> <span class="pinyin-inline-spoiler">xǐwǎnjīng</span> <span class="zh-char">洗碗精</span> </div>
+          <span>、</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="хартиени кърпички"> <span class="pinyin-inline-spoiler">zhǐjīn</span> <span class="zh-char">纸巾</span> </div>
+          <span>和</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="торбички за боклук"> <span class="pinyin-inline-spoiler">lājídài</span> <span class="zh-char">垃圾袋</span> </div>
+          <span>。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="entry">
+      <div class="entry-header">
+        <p class="bg-sentence">Когато приключи, апартаментът изглеждаше значително по-подреден, а Иван се почувства доволен от свършената работа.</p>
+        <button class="tts-btn" data-zh="收拾完毕后，公寓看起来井然有序多了，伊万对自己完成的工作感到称心如意。" title="Изслушай">🔊</button>
+      </div>
+      <div class="chinese-main-spoiler" onclick="revealMain(this)">
+        <div class="zh-content" lang="zh-Hans">
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="да прибера / да разтребя"> <span class="pinyin-inline-spoiler">shōushi</span> <span class="zh-char">收拾</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="завършвам / приключвам"> <span class="pinyin-inline-spoiler">wánbì</span> <span class="zh-char">完毕</span> </div>
+          <span>后，公寓</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="изглежда"> <span class="pinyin-inline-spoiler">kàn qǐlái</span> <span class="zh-char">看起来</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="в пълен ред / подредено"> <span class="pinyin-inline-spoiler">jǐnrán yǒuxù</span> <span class="zh-char">井然有序</span> </div>
+          <span>多了，伊万对自己完成的工作</span>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="почувства се (доволен)"> <span class="pinyin-inline-spoiler">gǎndào</span> <span class="zh-char">感到</span> </div>
+          <div class="zh-unit" onclick="revealPinyin(this)" data-bg="напълно удовлетворен"> <span class="pinyin-inline-spoiler">chèngxīn rúyì</span> <span class="zh-char">称心如意</span> </div>
+          <span>。</span>
+        </div>
       </div>
     </div>
   </div>
- 
-  <!-- 2 -->
-  <div class="entry">
-    <p class="bg-sentence">Първото нещо, което направи, беше да сортира всички кабели по вид и дължина.</p>
-    <div class="chinese-main-spoiler" onclick="revealMain(this)">
-      <div class="zh-content" lang="zh-Hans">
-        <span>他做的第一件事是按种类和长度将所有的</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">diànxiàn</span>
-          <span class="zh-char">电线</span>
-        </div>
-        <span>分类整理。</span>
-      </div>
+
+  <div id="glossary-section">
+    <h2>Вашият речник</h2>
+    <div class="glossary-controls">
+      <button class="btn" onclick="copyZhOnly()">Копирай само китайски</button>
+      <button class="btn primary" onclick="copyFullData()">Копирай КН + Пинин + БГ (с TAB)</button>
     </div>
+    <ul id="glossary-list"></ul>
   </div>
- 
-  <!-- 3 -->
-  <div class="entry">
-    <p class="bg-sentence">Той намери стара лента и опъна зарядните кабели на телефоните с нея.</p>
-    <div class="chinese-main-spoiler" onclick="revealMain(this)">
-      <div class="zh-content" lang="zh-Hans">
-        <span>他找到了一卷旧</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">jiāodài</span>
-          <span class="zh-char">胶带</span>
-        </div>
-        <span>，用它把手机</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">chōngdiànxiàn</span>
-          <span class="zh-char">充电线</span>
-        </div>
-        <span>绑在一起。</span>
-      </div>
-    </div>
-  </div>
- 
-  <!-- 4 -->
-  <div class="entry">
-    <p class="bg-sentence">После смени крушката на настолната лампа в кабинета, защото светлината беше твърде слаба.</p>
-    <div class="chinese-main-spoiler" onclick="revealMain(this)">
-      <div class="zh-content" lang="zh-Hans">
-        <span>接着，他更换了书房台灯的</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">dēngpào</span>
-          <span class="zh-char">灯泡</span>
-        </div>
-        <span>，因为光线太</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">àndàn</span>
-          <span class="zh-char">暗淡</span>
-        </div>
-        <span>了。</span>
-      </div>
-    </div>
-  </div>
- 
-  <!-- 5 -->
-  <div class="entry">
-    <p class="bg-sentence">Иван залепи етикети на всички чекмеджета в бюрото с малки самозалепващи листчета.</p>
-    <div class="chinese-main-spoiler" onclick="revealMain(this)">
-      <div class="zh-content" lang="zh-Hans">
-        <span>伊万用小</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">biānqiān</span>
-          <span class="zh-char">便签</span>
-        </div>
-        <span>纸给书桌的所有</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">chōuti</span>
-          <span class="zh-char">抽屉</span>
-        </div>
-        <span>贴上了标签。</span>
-      </div>
-    </div>
-  </div>
- 
-  <!-- 6 -->
-  <div class="entry">
-    <p class="bg-sentence">В кухнята подреди чиниите, паниците и тенджерите по размер върху рафтовете.</p>
-    <div class="chinese-main-spoiler" onclick="revealMain(this)">
-      <div class="zh-content" lang="zh-Hans">
-        <span>在厨房里，他按大小将</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">pánzi</span>
-          <span class="zh-char">盘子</span>
-        </div>
-        <span>、</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">wǎn</span>
-          <span class="zh-char">碗</span>
-        </div>
-        <span>和</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">guōjù</span>
-          <span class="zh-char">锅具</span>
-        </div>
-        <span>整齐摆放在</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">gézi</span>
-          <span class="zh-char">格子</span>
-        </div>
-        <span>架上。</span>
-      </div>
-    </div>
-  </div>
- 
-  <!-- 7 -->
-  <div class="entry">
-    <p class="bg-sentence">Той забеляза, че ситото и белачката за картофи липсват, и реши да ги намери по-късно.</p>
-    <div class="chinese-main-spoiler" onclick="revealMain(this)">
-      <div class="zh-content" lang="zh-Hans">
-        <span>他发现</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">lòusháo</span>
-          <span class="zh-char">漏勺</span>
-        </div>
-        <span>和土豆</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">bōpíqì</span>
-          <span class="zh-char">剥皮器</span>
-        </div>
-        <span>不见了，决定稍后再找。</span>
-      </div>
-    </div>
-  </div>
- 
-  <!-- 8 -->
-  <div class="entry">
-    <p class="bg-sentence">Докато работеше, Иван слушаше подкаст за продуктивност и ефективно управление на времето.</p>
-    <div class="chinese-main-spoiler" onclick="revealMain(this)">
-      <div class="zh-content" lang="zh-Hans">
-        <span>伊万一边工作，一边收听关于</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">chǎnchūlǜ</span>
-          <span class="zh-char">产出率</span>
-        </div>
-        <span>与高效</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">shíjiān guǎnlǐ</span>
-          <span class="zh-char">时间管理</span>
-        </div>
-        <span>的播客。</span>
-      </div>
-    </div>
-  </div>
- 
-  <!-- 9 -->
-  <div class="entry">
-    <p class="bg-sentence">Накрая написа списък за пазаруване, включващ препарат за съдове, хартиени кърпи и торбички за боклук.</p>
-    <div class="chinese-main-spoiler" onclick="revealMain(this)">
-      <div class="zh-content" lang="zh-Hans">
-        <span>最后，他写了一份购物清单，上面列了</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">xǐwǎnjīng</span>
-          <span class="zh-char">洗碗精</span>
-        </div>
-        <span>、</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">zhǐjīn</span>
-          <span class="zh-char">纸巾</span>
-        </div>
-        <span>和</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">lājídài</span>
-          <span class="zh-char">垃圾袋</span>
-        </div>
-        <span>。</span>
-      </div>
-    </div>
-  </div>
- 
-  <!-- 10 -->
-  <div class="entry">
-    <p class="bg-sentence">Когато приключи, апартаментът изглеждаше значително по-подреден, а Иван се почувства доволен от свършената работа.</p>
-    <div class="chinese-main-spoiler" onclick="revealMain(this)">
-      <div class="zh-content" lang="zh-Hans">
-        <span>收拾完毕后，公寓看起来</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">jǐnrán yǒuxù</span>
-          <span class="zh-char">井然有序</span>
-        </div>
-        <span>多了，伊万对自己完成的工作感到</span>
-        <div class="zh-unit" onclick="revealPinyin(this)">
-          <span class="pinyin-inline-spoiler">chèngxīn rúyì</span>
-          <span class="zh-char">称心如意</span>
-        </div>
-        <span>。</span>
-      </div>
-    </div>
-  </div>
- 
-</div>
+
+  <div id="toast">Копирано успешно!</div>
 
   <script>
     const bgSlider = document.getElementById('bgFontSlider');
     const zhSlider = document.getElementById('zhFontSlider');
     const bgValue = document.getElementById('bgFontValue');
     const zhValue = document.getElementById('zhFontValue');
+    const glossaryState = new Map();
 
     function updateBgFont() {
       const size = bgSlider.value;
@@ -450,20 +586,105 @@
     }
 
     function revealMain(el) {
-      el.classList.add('revealed');
+      el.classList.toggle('revealed');
     }
 
     function revealPinyin(el) {
       const spoiler = el.querySelector('.pinyin-inline-spoiler');
-      if (spoiler) spoiler.classList.add('revealed');
+      if (spoiler) {
+        spoiler.classList.toggle('revealed');
+        if (spoiler.classList.contains('revealed')) {
+          const zh = el.querySelector('.zh-char').textContent.trim();
+          const py = spoiler.textContent.trim();
+          const bg = el.dataset.bg || "Няма превод";
+          addWordToGlossary(zh, py, bg);
+        }
+      }
+    }
+
+    function addWordToGlossary(zh, py, bg) {
+      if (glossaryState.has(zh)) return;
+      glossaryState.set(zh, { py, bg });
+      renderGlossary();
+    }
+
+    function renderGlossary() {
+      const list = document.getElementById('glossary-list');
+      const section = document.getElementById('glossary-section');
+      if (glossaryState.size > 0) section.style.display = 'block';
+
+      list.innerHTML = '';
+      glossaryState.forEach((data, zh) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span class="gl-zh">${zh}</span> <span class="gl-py">${data.py}</span> <span class="gl-bg">— ${data.bg}</span>`;
+        list.appendChild(li);
+      });
+    }
+
+    function speak(text, e) {
+      if(e) e.stopPropagation();
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'zh-CN';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function fallbackCopyTextToClipboard(text) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.top = "0";
+      textArea.style.left = "0";
+      textArea.style.position = "fixed";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast();
+      } catch (err) { console.error(err); }
+      document.body.removeChild(textArea);
+    }
+
+    function copyZhOnly() {
+      if (glossaryState.size === 0) return;
+      fallbackCopyTextToClipboard(Array.from(glossaryState.keys()).join('\n'));
+    }
+
+    function copyFullData() {
+      if (glossaryState.size === 0) return;
+      const lines = [];
+      glossaryState.forEach((data, zh) => lines.push(`${zh}\t${data.py}\t${data.bg}`));
+      fallbackCopyTextToClipboard(lines.join('\n'));
+    }
+
+    function showToast() {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
     document.querySelectorAll('.zh-unit').forEach(function (unit) {
-      unit.addEventListener('click', function (e) {
-        e.stopPropagation();
-        const spoiler = unit.querySelector('.pinyin-inline-spoiler');
-        if (spoiler) spoiler.classList.add('revealed');
+      unit.setAttribute('tabindex', '0');
+      unit.addEventListener('click', (e) => e.stopPropagation());
+      unit.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault(); e.stopPropagation(); revealPinyin(this);
+        }
       });
+    });
+
+    document.querySelectorAll('.chinese-main-spoiler').forEach(function(el) {
+      el.setAttribute('tabindex', '0');
+      el.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault(); revealMain(this);
+        }
+      });
+    });
+    
+    document.querySelectorAll('.tts-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => speak(btn.dataset.zh, e));
     });
 
     bgSlider.addEventListener('input', updateBgFont);
