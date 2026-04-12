@@ -431,17 +431,7 @@
  
 </div>
 
- <script>
-  function revealMain(el) {
-    el.classList.add('revealed');
-  }
-
-  function revealPinyin(el) {
-    var spoiler = el.querySelector('.pinyin-inline-spoiler');
-    if (spoiler) spoiler.classList.add('revealed');
-  }
-
-  (function () {
+  <script>
     const bgSlider = document.getElementById('bgFontSlider');
     const zhSlider = document.getElementById('zhFontSlider');
     const bgValue = document.getElementById('bgFontValue');
@@ -452,16 +442,26 @@
       document.documentElement.style.setProperty('--bg-font-size', size + 'px');
       bgValue.textContent = size + ' px';
     }
+
     function updateZhFont() {
       const size = zhSlider.value;
       document.documentElement.style.setProperty('--zh-font-size', size + 'px');
       zhValue.textContent = size + ' px (пинин ≈ 60%)';
     }
 
-    document.querySelectorAll('.zh-unit').forEach(function(unit) {
-      unit.addEventListener('click', function(e) {
+    function revealMain(el) {
+      el.classList.add('revealed');
+    }
+
+    function revealPinyin(el) {
+      const spoiler = el.querySelector('.pinyin-inline-spoiler');
+      if (spoiler) spoiler.classList.add('revealed');
+    }
+
+    document.querySelectorAll('.zh-unit').forEach(function (unit) {
+      unit.addEventListener('click', function (e) {
         e.stopPropagation();
-        var spoiler = unit.querySelector('.pinyin-inline-spoiler');
+        const spoiler = unit.querySelector('.pinyin-inline-spoiler');
         if (spoiler) spoiler.classList.add('revealed');
       });
     });
@@ -470,7 +470,6 @@
     zhSlider.addEventListener('input', updateZhFont);
     updateBgFont();
     updateZhFont();
-  })();
-</script>
+  </script>
 </body>
 </html>
