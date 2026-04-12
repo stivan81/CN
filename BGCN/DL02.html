@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <title>Интерактивно упражнение за четене: Битови вещи и действия</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-font-size: 20px;
+      --zh-font-size: 25px;
+      --pinyin-scale: 0.6;
+      --font-bg: "Manrope", "Aptos", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-zh: "STKaiti", "KaiTi", "楷体", "Microsoft YaHei", "PingFang SC", serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html[lang="bg"] {
+      font-variant-ligatures: common-ligatures;
+      font-feature-settings: "locl" 1;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      background-color: #0f172a;
+      color: #e0f2fe;
+      font-family: var(--font-bg);
+      font-variant-ligatures: common-ligatures;
+      font-feature-settings: "locl" 1;
+      line-height: 1.6;
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 4px;
+      font-size: 32px;
+      color: #e0f2fe;
+    }
+
+    .subtext {
+      margin-bottom: 24px;
+      color: #bae6fd;
+      font-size: 15px;
+      max-width: 900px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 16px;
+      margin-bottom: 24px;
+      border-radius: 12px;
+      background-color: #020617;
+      border: 1px solid #1e293b;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 220px;
+    }
+
+    .control-label {
+      font-size: 14px;
+      color: #e0f2fe;
+    }
+
+    .control-value {
+      font-size: 12px;
+      color: #7dd3fc;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: #38bdf8;
+    }
+
+    .entries {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 900px;
+    }
+
+    .entry {
+      padding: 16px 18px;
+      border-radius: 12px;
+      background-color: #020617;
+      border: 1px solid #1e293b;
+    }
+
+    .bg-sentence {
+      display: block;
+      margin-bottom: 10px;
+      font-size: var(--bg-font-size);
+      color: #e0f2fe;
+    }
+
+    .chinese-main-spoiler {
+      position: relative;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background-color: #1e293b;
+      border: 1px solid #38bdf8;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .chinese-main-spoiler::before {
+      content: "Покажи целия китайски превод";
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #020617, #0f172a);
+      color: #e0f2fe;
+      font-size: 15px;
+      letter-spacing: 0.03em;
+      text-align: center;
+      padding: 0 16px;
+      transition: opacity 0.2s ease;
+      z-index: 2;
+    }
+
+    .chinese-main-spoiler.revealed::before {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .zh-content {
+      position: relative;
+      z-index: 1;
+      font-size: var(--zh-font-size);
+      color: #e5e7eb;
+      line-height: 1.9;
+    }
+
+    .zh-content[lang="zh-Hans"] {
+      font-family: var(--font-zh);
+      font-language-override: normal;
+      font-feature-settings: normal;
+    }
+
+    .zh-unit {
+      display: inline-flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      justify-content: flex-start;
+      margin: 0 2px;
+    }
+
+    .pinyin-inline-spoiler {
+      display: inline-block;
+      padding: 1px 4px;
+      margin-bottom: 2px;
+      border-radius: 4px;
+      background-color: #9333ea;
+      color: transparent;
+      cursor: pointer;
+      font-size: calc(var(--zh-font-size) * var(--pinyin-scale));
+      line-height: 1.1;
+      user-select: none;
+      white-space: nowrap;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .pinyin-inline-spoiler::before {
+      content: "···";
+      color: #e5e7eb;
+    }
+
+    .pinyin-inline-spoiler.revealed {
+      background-color: transparent;
+      color: #22c55e;
+    }
+
+    .pinyin-inline-spoiler.revealed::before {
+      content: "";
+    }
+
+    .zh-char {
+      font-size: var(--zh-font-size);
+      line-height: 1.2;
+      color: #e5e7eb;
+    }
+
+    .hint {
+      margin-top: 6px;
+      font-size: 12px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <h1>Интерактивно упражнение за четене: Битови вещи и ежедневни действия</h1>
+  <div class="subtext">
+    Текстът описва как един студент постепенно организира малкия си апартамент, като подрежда вещи, ремонтира дребни неща,
+    чете инструкции и изгражда навици за по-ефективно учене и живот. Преводът е на ниво поне HSK5, с подбрани по-редки думи,
+    за които можеш селективно да разкриваш пинин.
+  </div>
+
+  <div class="controls">
+    <div class="control-group">
+      <span class="control-label">Размер на българския текст</span>
+      <input id="bgFontSlider" type="range" min="16" max="42" value="20">
+      <span class="control-value" id="bgFontValue">20 px</span>
+    </div>
+    <div class="control-group">
+      <span class="control-label">Размер на китайския текст</span>
+      <input id="zhFontSlider" type="range" min="20" max="52" value="28">
+      <span class="control-value" id="zhFontValue">28 px (пинин ≈ 60%)</span>
+    </div>
+  </div>
+
+  <div class="entries">
+
+    <div class="entry">
+      <span class="bg-sentence" lang="bg">
+        В неделя сутрин студентът реши най-накрая да подреди малкия си апартамент, защото бюрото, рафтовете и чекмеджетата бяха пълни с разхвърляни учебници, кабели и дребни вещи.
+      </span>
+      <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+        <div class="zh-content" lang="zh-Hans">
+          周日早上，这名学生终于决定整理自己狭小的公寓，
+          因为书桌、书架和
+          <span class="zh-unit">
+            <span class="pinyin-inline-spoiler" onclick="event.stopPropagation(); this.classList.toggle('revealed')">chōutì</span>
+            <span class="zh-char">抽屉</span>
+          </span>
+          里都塞满了凌乱的教材、电线和各种小物件。
+        </div>
+      </div>
+    </div>
+
+    <div class="entry">
+      <span class="bg-sentence" lang="bg">
+        Той започна с това да извади всички кабели от едно чекмедже и внимателно да ги сортира по вид, като залепи етикети, за да не се обърква, когато търси зарядно или адаптер.
+      </span>
+      <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+        <div class="zh-content" lang="zh-Hans">
+          他先把一个抽屉里的所有电线都拿出来，小心地按种类分类，
+          还贴上标签，这样以后找充电器或转换头时就不会再混淆。
+        </div>
+      </div>
+    </div>
+
+    <div class="entry">
+      <span class="bg-sentence" lang="bg">
+        Когато забеляза, че настолната лампа премигва, той отвори кутията с инструменти и сам се опита да я ремонтира, вместо веднага да купува нова.
+      </span>
+      <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+        <div class="zh-content" lang="zh-Hans">
+          他发现台灯一直在闪烁，就打开工具箱，打算自己动手
+          <span class="zh-unit">
+            <span class="pinyin-inline-spoiler" onclick="event.stopPropagation(); this.classList.toggle('revealed')">wéixiū</span>
+            <span class="zh-char">维修</span>
+          </span>
+          ，而不是立刻去买一盏新的。
+        </div>
+      </div>
+    </div>
+
+    <div class="entry">
+      <span class="bg-sentence" lang="bg">
+        За да не повреди лампата, той внимателно прочете цялото упътване, което беше сгънато на дъното на кутията, и следваше стъпките една по една.
+      </span>
+      <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+        <div class="zh-content" lang="zh-Hans">
+          为了不弄坏台灯，他耐心地把盒子底部那张折起来的
+          <span class="zh-unit">
+            <span class="pinyin-inline-spoiler" onclick="event.stopPropagation(); this.classList.toggle('revealed')">shuōmíngshū</span>
+            <span class="zh-char">说明书</span>
+          </span>
+          从头到尾读了一遍，并一步一步地照着操作。
+        </div>
+      </div>
+    </div>
+
+    <div class="entry">
+      <span class="bg-sentence" lang="bg">
+        След като оправи лампата, той реши да премести удължителя и да подреди кабелите така, че да не висят пред контактите и да не пречат, когато чисти пода.
+      </span>
+      <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+        <div class="zh-content" lang="zh-Hans">
+          修好台灯之后，他又决定挪动插线板，把电线整理好，
+          这样它们就不会垂在
+          <span class="zh-unit">
+            <span class="pinyin-inline-spoiler" onclick="event.stopPropagation(); this.classList.toggle('revealed')">chāzuò</span>
+            <span class="zh-char">插座</span>
+          </span>
+          前面，也不会在打扫地面时碍事。
+        </div>
+      </div>
+    </div>
+
+    <div class="entry">
+      <span class="bg-sentence" lang="bg">
+        На кухненския плот той подреди чашите и купите по размер, а по-рядко използваните съдове сложи в отделна кутия, за да освободи място за учебни материали и бележки.
+      </span>
+      <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+        <div class="zh-content" lang="zh-Hans">
+          在厨房的台面上，他按大小把杯子和碗排好，
+          把不常用的餐具放进一个单独的
+          <span class="zh-unit">
+            <span class="pinyin-inline-spoiler" onclick="event.stopPropagation(); this.classList.toggle('revealed')">shōunàhé</span>
+            <span class="zh-char">收纳盒</span>
+          </span>
+          ，为学习资料和笔记腾出更多空间。
+        </div>
+      </div>
+    </div>
+
+    <div class="entry">
+      <span class="bg-sentence" lang="bg">
+        Той залепи малък списък на вратата на хладилника, където записваше какво трябва да купи, какво да изхвърли и какво да подреди, за да не забравя дребните задачи.
+      </span>
+      <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+        <div class="zh-content" lang="zh-Hans">
+          他在冰箱门上贴了一张小清单，
+          把需要购买的东西、要扔掉的食物以及要整理的角落都记下来，
+          这样就不会忘记这些零碎的任务。
+        </div>
+      </div>
+    </div>
+
+    <div class="entry">
+      <span class="bg-sentence" lang="bg">
+        В края на деня апартаментът изглеждаше по-подреден, а той почувства, че когато работното му място е чисто, може по-лесно да се концентрира върху китайските текстове и новата лексика.
+      </span>
+      <div class="chinese-main-spoiler" onclick="this.classList.add('revealed')">
+        <div class="zh-content" lang="zh-Hans">
+          一天结束时，公寓显得整洁多了，他也意识到，
+          当自己的学习空间干净有序时，更容易专注于中文课文和新的词汇，
+          不会那么容易分心。
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    (function () {
+      const bgSlider = document.getElementById('bgFontSlider');
+      const zhSlider = document.getElementById('zhFontSlider');
+      const bgValue = document.getElementById('bgFontValue');
+      const zhValue = document.getElementById('zhFontValue');
+
+      function updateBgFont() {
+        const size = bgSlider.value;
+        document.documentElement.style.setProperty('--bg-font-size', size + 'px');
+        bgValue.textContent = size + ' px';
+      }
+
+      function updateZhFont() {
+        const size = zhSlider.value;
+        document.documentElement.style.setProperty('--zh-font-size', size + 'px');
+        zhValue.textContent = size + ' px (пинин ≈ 60%)';
+      }
+
+      bgSlider.addEventListener('input', updateBgFont);
+      zhSlider.addEventListener('input', updateZhFont);
+
+      updateBgFont();
+      updateZhFont();
+    })();
+  </script>
+</body>
+</html>
