@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Китайски език - Учебен портал</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=LXGW+WenKai&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Специфични стилове за landing page */
+    .hero-section {
+      text-align: center;
+      padding: 3rem 0;
+      margin-bottom: 2rem;
+    }
+
+    .hero-section h1 {
+      font-size: 3.5rem;
+      background: linear-gradient(to right, var(--accent-color), #fcd34d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .instruction-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .instruction-card {
+      background: var(--bg-panel);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .instruction-card h3 {
+      margin-top: 0;
+      color: var(--accent-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .module-card {
+      background: var(--bg-panel);
+      padding: 2rem;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      text-decoration: none;
+      color: var(--text-main);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--accent-color);
+      box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.3);
+    }
+
+    .module-card .icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .module-card h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      border: none;
+      padding: 0;
+    }
+
+    .module-card p {
+      color: var(--text-sub);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--accent-color);
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+      .hero-section h1 { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-actions">
+    <button id="themeBtn" class="square-btn">🌙</button>
+  </div>
+
+  <section class="hero-section">
+    <h1>汉语学习中心</h1>
+    <p class="subtext">Интерактивни ресурси за овладяване на китайски език</p>
+  </section>
+
+  <h2>Инструкции за работа</h2>
+  <div class="instruction-grid">
+    <div class="instruction-card">
+      <h3><span>💡</span> Отговори</h3>
+      <p>Оцветените полета съдържат превод или отговор. <strong>Натиснете върху тях</strong>, за да ги разкриете. </p>
+    </div>
+    <div class="instruction-card">
+      <h3><span>🌓</span> Теми</h3>
+      <p>Използвай бутона с икона на луна или слънце в горния десен ъгъл за промяна на темата на страницата.</p>
+    </div>
+    <div class="instruction-card">
+      <h3><span>🔊</span> Аудио</h3>
+      <p>Бутонът с икона на високоговорител пуска автоматично генерирано произношение. Гласовете се адаптират спрямо ролите в диалозите (мъжки/женски). Работи добре на Edge, на Андроид и Уиндоус, за други браузъри може да е по-проблемно.
+    </div>
+  </div>
+
+  <h2>Учебни модули</h2>
+  <div class="module-grid">
+    
+    <a href="12-2_Kewen.html" class="module-card">
+      <span class="badge">Урок 12</span>
+      <div class="icon">📖</div>
+      <h2>第12课课文</h2>
+      <p>我的护照你找到了没有？</p>
+    </a>
+
+    <a href="12-3_Yufa Lianxi.html" class="module-card">
+      <span class="badge">Урок 12</span>
+      <div class="icon">✍️</div>
+      <h2>第12课语法练习</h2>
+      <p>На фокус: глаголи + 到、在、成、好、着 и др.; топикализация на обекта （ O S V ）</p>
+    </a>
+
+    <a href="12-4_Yuedu_Lianxi.html" class="module-card">
+      <span class="badge">Урок 12</span>
+      <div class="icon">📜</div>
+      <h2>第12课阅读练习</h2>
+      <p>练习2、7、8</p>
+    </a>
+
+    <a href="12-5_Fanyi Lianxi.html" class="module-card">
+      <span class="badge">Урок 12</span>
+      <div class="icon">🔄</div>
+      <h2>第12课翻译练习</h2>
+      <p>10 изречения за превод от български на китайски език.</p>
+    </a>
+
+    <a href="13-1_Shengci.html" class="module-card">
+      <span class="badge">Урок 13</span>
+      <div class="icon">🏮</div>
+      <h2>第13课生词</h2>
+      <p>Новата лексика за Урок 13 с примери и обяснения.</p>
+    </a>
+
+  </div>
+
+  <!-- <footer style="margin-top: 5rem; text-align: center; color: var(--text-sub); font-size: 0.8rem; padding-bottom: 2rem;">
+    <p>© 2026 Интерактивно помагало по китайски език. Всички права запазени.</p>
+  </footer> -->
+
+  <script src="script.js"></script>
+</body>
+</html>

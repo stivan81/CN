@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第十二课 翻译练习 - Превод</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    
+    .bg-spoiler.revealed {
+      color: #fffdd0 !important; /* Cream цвят */
+      text-shadow: 0 0 8px rgba(255, 253, 208, 0.3);
+      font-family: var(--font-zh);
+      font-size: var(--zh-font-size); 
+    }
+    
+    /* Тъмно син/лазурен цвят за разкрития превод (Светла тема) */
+    body.light-theme .bg-spoiler.revealed {
+      color: #0284c7 !important;
+      text-shadow: 0 0 1px rgba(2, 132, 199, 0.2);
+    }
+
+    /* Пълно скриване на съдържанието преди клик */
+    .bg-spoiler:not(.revealed) {
+      color: transparent !important;
+    }
+
+    /* Специфични стилове за блока за превод */
+    .translation-spoiler {
+      display: block;
+      width: 100%;
+      min-height: 2.5em;
+      margin-top: 10px;
+      padding: 12px 18px;
+      border-radius: 8px;
+      text-align: left !important;
+      line-height: 1.4;
+    }
+
+    /* Предпазване от клик върху вътрешни елементи преди разкриване */
+    .bg-spoiler * {
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-actions">
+    <button id="themeBtn" class="square-btn" title="Смени тема">🌙</button>
+  </div>
+
+  <h1>第十二课 翻译练习</h1>
+  <div class="context-note">
+    Преведете на китайски следните изречения.
+  </div>
+
+  <div class="controls">
+    <div class="control-group">
+      <span class="control-label">Китайски текст: <span id="zhVal">26</span>px</span>
+      <input type="range" id="zhSlider" min="20" max="48" value="26">
+    </div>
+    <div class="control-group">
+      <span class="control-label">Български текст: <span id="bgVal">19</span>px</span>
+      <input type="range" id="bgSlider" min="14" max="32" value="19">
+    </div>
+  </div>
+
+  <div class="dialogue-container">
+    
+    <div class="line">
+      <div class="content">
+        <span class="bg-text">1. Този куфар можеш ли да ми помогнеш да го сложа под леглото?</span>
+        <span class="bg-spoiler translation-spoiler">这个箱子你可以帮我放在床下吗？</span>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="content">
+        <span class="bg-text">2. Визата я извадих вече, но не съм запомнил паспорта къде го сложих.</span>
+        <span class="bg-spoiler translation-spoiler">签证已经办好了，但是我没记住护照放在哪里了。</span>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="content">
+        <span class="bg-text">3. Съобщението „Временно не работи“ служителят го залепи вляво от входа на магазина.</span>
+        <span class="bg-spoiler translation-spoiler">“暂停营业”的通知营业员贴在了商店门口左边。</span>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="content">
+        <span class="bg-text">4. Колата не може да се паркира тук, трябва да я закараш на онзи паркинг.</span>
+        <span class="bg-spoiler translation-spoiler">车不能停在这里，你要开到那个停车场。</span>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="content">
+        <span class="bg-text">5. Домашното отдавна го свърших, но още не съм го предал на учителя.</span>
+        <span class="bg-spoiler translation-spoiler">作业我早就做完了，但是还没有交给老师呢。</span>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="content">
+        <span class="bg-text">6. За съжаление се разболях тези дни и затова не мога да дойда днес да гледаме музика на живо.</span>
+        <span class="bg-spoiler translation-spoiler">糟糕，我这几天生病了，所以今天不能去看现场音乐。</span>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="content">
+        <span class="bg-text">7. Не се пали до такава степен (по нещо), изобщо не е добре за здравето това!</span>
+        <span class="bg-spoiler translation-spoiler">你不要迷到这个程度了，这对身体一点儿也不好！</span>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="content">
+        <span class="bg-text">8. Автобуса за Шанхай го чаках маса време, накрая някой ми каза, че всеки момент щял да тръгва.</span>
+        <span class="bg-spoiler translation-spoiler">去上海的汽车我等了半天，最后有人跟我说快要开车了。</span>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="content">
+        <span class="bg-text">9. За да гледа мачовете от световната купа по футбол, той обикновено спи през деня.</span>
+        <span class="bg-spoiler translation-spoiler">为了看足球世界杯的比赛，他一般白天睡觉。</span>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="content">
+        <span class="bg-text">10. Книгата, която ми зае, си я сложих в джоба на палтото.</span>
+        <span class="bg-spoiler translation-spoiler">你借给我的书我放在大衣的口袋里了。</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

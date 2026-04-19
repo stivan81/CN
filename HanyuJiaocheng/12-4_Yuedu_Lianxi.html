@@ -1,0 +1,400 @@
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <title>第十二课 练习 - Урок 12 Упражнения</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="top-actions">
+    <button id="themeBtn" class="square-btn">🌙</button>
+  </div>
+
+  <h1>第十二课 练习</h1>
+
+  <div class="controls">
+    <div class="control-group">
+      <span class="control-label">Китайски текст: <span id="zhVal">26</span>px</span>
+      <input type="range" id="zhSlider" min="20" max="48" value="26">
+    </div>
+    <div class="control-group">
+      <span class="control-label">Български текст: <span id="bgVal">19</span>px</span>
+      <input type="range" id="bgSlider" min="14" max="32" value="19">
+    </div>
+  </div>
+
+  <!-- EXERCISE 2 -->
+  <h2>朗读 </h2>
+
+  <h3>练习 1 (2)</h3>
+  <table class="pattern-table">
+    <tbody>
+      <tr>
+        <td>
+          <span class="zh-text">看了半天</span>
+          <span class="bg-spoiler">гледах/четох много време</span>
+        </td>
+        <td>
+          <span class="zh-text">放在手提包儿里</span>
+          <span class="bg-spoiler">слагам в ръчната чанта</span>
+        </td>
+        <td>
+          <span class="zh-text">交给老师</span>
+          <span class="bg-spoiler">предавам на учителя</span>
+        </td>
+        <td>
+          <span class="zh-text">去成了</span>
+          <span class="bg-spoiler">успях да отида</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span class="zh-text">等了半天</span>
+          <span class="bg-spoiler">чаках маса време</span>
+        </td>
+        <td>
+          <span class="zh-text">放在桌子上</span>
+          <span class="bg-spoiler">слагам на масата</span>
+        </td>
+        <td>
+          <span class="zh-text">借给同学</span>
+          <span class="bg-spoiler">заемам на съученика</span>
+        </td>
+        <td>
+          <span class="zh-text">做成了</span>
+          <span class="bg-spoiler">успях да направя</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span class="zh-text">找了半天</span>
+          <span class="bg-spoiler">търсих цяла вечност</span>
+        </td>
+        <td>
+          <span class="zh-text">写在本子上</span>
+          <span class="bg-spoiler">написвам в тетрадката</span>
+        </td>
+        <td>
+          <span class="zh-text">寄给妈妈</span>
+          <span class="bg-spoiler">изпращам на мама (по пощата/куриер)</span>
+        </td>
+        <td>
+          <span class="zh-text">写成了</span>
+          <span class="bg-spoiler">успях да напиша</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span class="zh-text">写了半天</span>
+          <span class="bg-spoiler">писах сто часа</span>
+        </td>
+        <td>
+          <span class="zh-text">挂在<ruby>墙<rt>qiáng</rt></ruby>上</span>
+          <span class="bg-spoiler">окачвам на стената</span>
+        </td>
+        <td>
+          <span class="zh-text">送给朋友</span>
+          <span class="bg-spoiler">подарявам на приятел</span>
+        </td>
+        <td>
+          <span class="zh-text">变成了</span>
+          <span class="bg-spoiler">превърнал съм се</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span class="zh-text">译成汉语</span>
+          <span class="bg-spoiler">превеждам на китайски</span>
+        </td>
+        <td>
+          <span class="zh-text">写成小说</span>
+          <span class="bg-spoiler">написвам под формата на роман</span>
+        </td>
+        <td>
+          <span class="zh-text"><ruby>改<rt>gǎi</rt></ruby>成会话</span>
+          <span class="bg-spoiler">преработвам в диалог</span>
+        </td>
+        <td>
+          <span class="zh-text">换成人民币</span>
+          <span class="bg-spoiler">обръщам в юани</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- EXERCISE 7 -->
+  <h2>7. 交际会话 (Communication)</h2>
+
+  <h3>(1) 换零钱 — Обмяна на дребни пари</h3>
+  <div class="dialogue-container">
+    <div class="line">
+      <div class="actant">张东：</div>
+      <div class="content">
+        <span class="zh-text">麻烦您给我换成零钱。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('麻烦您给我换成零钱。', '张东')">🔊</button>
+          <span class="bg-spoiler">„Бихте ли ми развалили малко пари на дребно?"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">店员：</div>
+      <div class="content">
+        <span class="zh-text">换成多少一张的?</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('换成多少一张的?', '店员')">🔊</button>
+          <span class="bg-spoiler">„На банкноти по колко да Ви ги разваля? (букв. „да ги сменя в по колко за една [банкнота]?“)"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">张东：</div>
+      <div class="content">
+        <span class="zh-text">换成十块一张的就行。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('换成十块一张的就行。', '张东')">🔊</button>
+          <span class="bg-spoiler">„На банкноти по десет юана ще бъде добре."</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">店员：</div>
+      <div class="content">
+        <span class="zh-text">给您。请数数。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('给您。请数数。', '店员')">🔊</button>
+          <span class="bg-spoiler">„Заповядайте. Моля, пребройте ги."</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">张东：</div>
+      <div class="content">
+        <span class="zh-text">对。谢谢您了!</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('对。谢谢您了!', '张东')">🔊</button>
+          <span class="bg-spoiler">„Точно са. Благодаря Ви!"</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 30px;">(2) 取印章 — Вземане на печат</h3>
+  <div class="dialogue-container">
+    <div class="line">
+      <div class="actant">山本：</div>
+      <div class="content">
+        <span class="zh-text">请问, 我的印章刻好了没有?</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('请问, 我的印章刻好了没有?', '山本')">🔊</button>
+          <span class="bg-spoiler">„Извинете, моят печат дали не е готов? [букв. изсечен 刻好]"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">营业员：</div>
+      <div class="content">
+        <span class="zh-text">刻好了, 你看看吧。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('刻好了, 你看看吧。', '营业员')">🔊</button>
+          <span class="bg-spoiler">„Готов е, погледнете го, моля."</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">山本：</div>
+      <div class="content">
+        <span class="zh-text">这就是篆字吗?</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('这就是篆字吗?', '山本')">🔊</button>
+          <span class="bg-spoiler">„Това (шрифтът) джуандзъ ли е?"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">营业员：</div>
+      <div class="content">
+        <span class="zh-text">对。你看, "山本幸子"。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('对。你看, “山本幸子”。', '营业员')">🔊</button>
+          <span class="bg-spoiler">„Да. Вижте: Сачико Ямамото."</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">山本：</div>
+      <div class="content">
+        <span class="zh-text">啊, 太好了!</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('啊, 太好了!', '山本')">🔊</button>
+          <span class="bg-spoiler">„О, страхотно е!"</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXERCISE 8 -->
+  <h2>8. 阅读理解 (Reading Comprehension)</h2>
+
+  <h3>📌 补充生词 (Допълнителни думи):</h3>
+  <div class="vocab-grid">
+    <div class="vocab-item">
+      <span><strong class="zh-text" style="font-size: 1.1em; display: inline;">从前</strong> cóngqián</span>
+      <span class="bg-spoiler">„едно време / някога"</span>
+    </div>
+    <div class="vocab-item">
+      <span><strong class="zh-text" style="font-size: 1.1em; display: inline;">斧子</strong> fǔzi</span>
+      <span class="bg-spoiler">„брадва"</span>
+    </div>
+    <div class="vocab-item">
+      <span><strong class="zh-text" style="font-size: 1.1em; display: inline;">怀疑</strong> huáiyí</span>
+      <span class="bg-spoiler">„подозирам / съмнявам се"</span>
+    </div>
+    <div class="vocab-item">
+      <span><strong class="zh-text" style="font-size: 1.1em; display: inline;">邻居</strong> línjū</span>
+      <span class="bg-spoiler">„съсед"</span>
+    </div>
+    <div class="vocab-item">
+      <span><strong class="zh-text" style="font-size: 1.1em; display: inline;">偷</strong> tōu</span>
+      <span class="bg-spoiler">„крада"</span>
+    </div>
+    <div class="vocab-item">
+      <span><strong class="zh-text" style="font-size: 1.1em; display: inline;">举动</strong> jǔdòng</span>
+      <span class="bg-spoiler">„действие / проява"</span>
+    </div>
+    <div class="vocab-item">
+      <span><strong class="zh-text" style="font-size: 1.1em; display: inline;">言行</strong> yánxíng</span>
+      <span class="bg-spoiler">„думи и дела"</span>
+    </div>
+    <div class="vocab-item">
+      <span><strong class="zh-text" style="font-size: 1.1em; display: inline;">小偷</strong> xiǎotōu</span>
+      <span class="bg-spoiler">„крадец"</span>
+    </div>
+  </div>
+
+  <h3>💬 丢斧子的故事 (Притчата за изгубената брадва):</h3>
+  <div class="reading-text">
+    <div class="reading-sentence">
+      <span class="zh-text">从前有个人，丢了一把斧子。</span>
+      <div class="action-row">
+        <button class="tts-btn" onclick="speak('从前有个人，丢了一把斧子。', 'narrator')">🔊</button>
+        <span class="bg-spoiler">„Едно време имало един човек, който си изгубил една брадва."</span>
+      </div>
+    </div>
+
+    <div class="reading-sentence">
+      <span class="zh-text">他怀疑是邻居的儿子偷走了。</span>
+      <div class="action-row">
+        <button class="tts-btn" onclick="speak('他怀疑是邻居的儿子偷走了。', 'narrator')">🔊</button>
+        <span class="bg-spoiler">„Той подозирал, че синът на съседа я е откраднал."</span>
+      </div>
+    </div>
+
+    <div class="reading-sentence">
+      <span class="zh-text">他观察那个孩子走起路来的样子，像个小偷；看那个孩子的表情，也像个小偷；听那个孩子说话，还像个小偷。</span>
+      <div class="action-row">
+        <button class="tts-btn" onclick="speak('他观察那个孩子走起路来的样子，像个小偷；看那个孩子的表情，也像个小偷；听那个孩子说话，还像个小偷。', 'narrator')">🔊</button>
+        <span class="bg-spoiler">„Наблюдавал как детето, когато ходело, приличало на крадец; гледал изражението му – и то било като на крадец; слушал го как говори – пак като крадец."</span>
+      </div>
+    </div>
+
+    <div class="reading-sentence">
+      <span class="zh-text">总之，那个孩子的一举一动、一言一行，没有不像小偷的。</span>
+      <div class="action-row">
+        <button class="tts-btn" onclick="speak('总之，那个孩子的一举一动、一言一行，没有不像小偷的。', 'narrator')">🔊</button>
+        <span class="bg-spoiler">„Накратко, във всяко негово движение и действие, всяка негова дума и постъпка – нямало такова, по което да не приличало на крадец."</span>
+      </div>
+    </div>
+
+    <div class="reading-sentence">
+      <span class="zh-text">过了几天，那个人去山上砍柴，在山谷里找到了自己的斧子。</span>
+      <div class="action-row">
+        <button class="tts-btn" onclick="speak('过了几天，那个人去山上砍柴，在山谷里找到了自己的斧子。', 'narrator')">🔊</button>
+        <span class="bg-spoiler">„След няколко дни човекът отишъл в планината да сече дърва и намерил брадвата си в една долина."</span>
+      </div>
+    </div>
+
+    <div class="reading-sentence">
+      <span class="zh-text">原来是他前几天在山上砍柴时，忘在山谷里了。</span>
+      <div class="action-row">
+        <button class="tts-btn" onclick="speak('原来是他前几天在山上砍柴时，忘在山谷里了。', 'narrator')">🔊</button>
+        <span class="bg-spoiler">„Оказало се, няколко дни преди това, докато сякъл дърва в планината, я бил забравил в долината."</span>
+      </div>
+    </div>
+
+    <div class="reading-sentence">
+      <span class="zh-text">回家以后，他又看邻居的那个儿子。</span>
+      <div class="action-row">
+        <button class="tts-btn" onclick="speak('回家以后，他又看邻居的那个儿子。', 'narrator')">🔊</button>
+        <span class="bg-spoiler">„След като се прибрал, той отново загледал съседското момче."</span>
+      </div>
+    </div>
+
+    <div class="reading-sentence">
+      <span class="zh-text">发现那个孩子的举动、言行，一点儿也不像小偷了。</span>
+      <div class="action-row">
+        <button class="tts-btn" onclick="speak('发现那个孩子的举动、言行，一点儿也不像小偷了。', 'narrator')">🔊</button>
+        <span class="bg-spoiler">„Установил, че движенията, действията, думите и постъпките му изобщо вече не приличат на тези на крадец."</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>❓ 问题 (Въпроси):</h3>
+  <div class="dialogue-container">
+    <div class="line">
+      <div class="actant">1.</div>
+      <div class="content">
+        <span class="zh-text">丢斧子的人为什么怀疑自己的斧子是邻居的儿子偷走的？</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('丢斧子的人为什么怀疑自己的斧子是邻居的儿子偷走的？', 'narrator')">🔊</button>
+          <span class="bg-spoiler">„Защо човекът, който си изгубил брадвата, подозирал, че синът на съседа я е откраднал?"</span>
+        </div>
+      </div>
+    </div>
+    <div class="line">
+      <div class="actant">2.</div>
+      <div class="content">
+        <span class="zh-text">斧子后来在哪儿找到了？</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('斧子后来在哪儿找到了？', 'narrator')">🔊</button>
+          <span class="bg-spoiler">„Къде била намерена брадвата по-късно?"</span>
+        </div>
+      </div>
+    </div>
+    <div class="line">
+      <div class="actant">3.</div>
+      <div class="content">
+        <span class="zh-text">找到斧子以后，邻居的儿子为什么又不像小偷了？</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('找到斧子以后，邻居的儿子为什么又不像小偷了？', 'narrator')">🔊</button>
+          <span class="bg-spoiler">„Защо след като намерил брадвата, синът на съседа вече не му приличал на крадец?"</span>
+        </div>
+      </div>
+    </div>
+    <div class="line">
+      <div class="actant">4.</div>
+      <div class="content">
+        <span class="zh-text">这个故事说明了什么？</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('这个故事说明了什么？', 'narrator')">🔊</button>
+          <span class="bg-spoiler">„Какво показва (каква е поуката от) тази история?"</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+<script src="https://replit-cdn.com/replit-pill/replit-pill.global.js" data-repl-id="3ad1051c-31c2-4eab-8f36-d34010581e66"></script></body>
+</html>

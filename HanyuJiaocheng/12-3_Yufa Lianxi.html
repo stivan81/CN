@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第十二课 语法练习 - Урок 12 Упражнения</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Блестящ/Resplendent цвят САМО за inline спойлерите (Упр. 3, 4, 5) */
+    .inline-spoiler.revealed {
+      color: #ffd700 !important; /* Златисто за тъмна тема */
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+    
+    body.light-theme .inline-spoiler.revealed {
+      color: #0284c7 !important; /* Лазурно синьо за светла тема */
+      text-shadow: 0 0 1px rgba(2, 132, 199, 0.2);
+    }
+
+    /* ФИКС: Скриване на абсолютно всичко преди разкриване, включително бургундския текст */
+    /* Използваме по-силен селектор, за да преборим специфичността на темите */
+    .bg-spoiler:not(.revealed),
+    .bg-spoiler:not(.revealed) span,
+    .bg-spoiler:not(.revealed) .error-highlight {
+      color: transparent !important;
+      text-decoration: none !important;
+      background-image: none !important;
+      text-shadow: none !important;
+    }
+
+    /* Предотвратява бъгове с кликането */
+    .bg-spoiler * {
+      pointer-events: none;
+    }
+
+    .inline-spoiler {
+      text-align: center !important;
+      display: inline-block;
+      padding: 0 8px;
+      vertical-align: baseline;
+      margin: 0 4px;
+      line-height: 1.2;
+      font-size: 1.2em;
+    }
+
+    /* Фиксирани ширини за подравняване */
+    .w-ex3a { min-width: 4.5em !important; }
+    .w-ex3bc { min-width: 3.5em !important; }
+    .w-ex4 { min-width: 7.5em !important; }
+    .w-ex5 { min-width: 15.5em !important; }
+    
+    .ex3-table {
+      margin: 0 0 25px 0;
+      width: fit-content;
+      background-color: rgba(255, 255, 255, 0.08);
+      border: 2px solid var(--accent-color);
+      border-radius: 8px;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow: hidden;
+    }
+    
+    body.light-theme .ex3-table {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .ex3-table td {
+      padding: 10px 20px;
+      border: 1px solid var(--border-color);
+    }
+
+    /* Упр. 6 - Специални цветове след разкриване */
+    .ex6-spoilers {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+      align-items: flex-start;
+    }
+
+    .ex6-spoilers .bg-spoiler {
+      padding: 6px 12px;
+      border-radius: 6px;
+      text-align: left !important;
+      line-height: 1.5;
+    }
+
+    /* Връщаме нормалния цвят за Упр. 6 след разкриване */
+    .ex6-answer.revealed {
+      color: var(--accent-color) !important;
+      text-shadow: none !important;
+    }
+
+    .ex6-explanation.revealed {
+      font-size: 0.9em;
+      font-style: italic;
+      color: var(--text-sub) !important;
+      text-shadow: none !important;
+    }
+
+    /* Бургундско подчертаване (вижда се само след разкриване) */
+    .error-highlight {
+      color: #ff4d6d !important;
+      font-weight: bold;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+    }
+    
+    body.light-theme .error-highlight {
+      color: #9d0208 !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-actions">
+    <button id="themeBtn" class="square-btn" title="Смени тема">🌙</button>
+  </div>
+
+  <h1>第十二课 语法练习</h1>
+  <div class="context-note">
+    Граматични упражнения (стр. 205-207)
+  </div>
+
+  <div class="controls">
+    <div class="control-group">
+      <span class="control-label">Китайски текст: <span id="zhVal">26</span>px</span>
+      <input type="range" id="zhSlider" min="20" max="48" value="26">
+    </div>
+    <div class="control-group">
+      <span class="control-label">Български текст: <span id="bgVal">19</span>px</span>
+      <input type="range" id="bgSlider" min="14" max="32" value="19">
+    </div>
+  </div>
+
+  <!-- EXERCISE 3 -->
+  <h2>3. 选词填空 (Избери правилната дума)</h2>
+  
+  <div class="grammar-note" style="margin-bottom: 15px;">
+    <strong>A.</strong> Използвайте думите:
+  </div>
+  
+  <table class="ex3-table">
+    <tbody>
+      <tr>
+        <td><span class="zh-text" style="margin: 0; font-size: calc(var(--zh-font-size) * 0.9);">丢</span></td>
+        <td><span class="zh-text" style="margin: 0; font-size: calc(var(--zh-font-size) * 0.9);">半天</span></td>
+        <td><span class="zh-text" style="margin: 0; font-size: calc(var(--zh-font-size) * 0.9);">为了</span></td>
+        <td><span class="zh-text" style="margin: 0; font-size: calc(var(--zh-font-size) * 0.9);">放</span></td>
+      </tr>
+      <tr>
+        <td><span class="zh-text" style="margin: 0; font-size: calc(var(--zh-font-size) * 0.9);">给</span></td>
+        <td><span class="zh-text" style="margin: 0; font-size: calc(var(--zh-font-size) * 0.9);">京剧迷</span></td>
+        <td><span class="zh-text" style="margin: 0; font-size: calc(var(--zh-font-size) * 0.9);">好</span></td>
+        <td><span class="zh-text" style="margin: 0; font-size: calc(var(--zh-font-size) * 0.9);">着</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="dialogue-container">
+    <div class="line"><div class="content"><span class="zh-text">(1) 我的护照你<span class="bg-spoiler inline-spoiler w-ex3a">放</span>在什么地方了？</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(2) 你的签证办<span class="bg-spoiler inline-spoiler w-ex3a">好</span>了没有？</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(3) 那本书我一看完就还<span class="bg-spoiler inline-spoiler w-ex3a">给</span>你了，你怎么忘了？</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(4) 电影票你买<span class="bg-spoiler inline-spoiler w-ex3a">着</span>了吗？</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(5) 我找了<span class="bg-spoiler inline-spoiler w-ex3a">半天</span>才找到。</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(6) 听说我们老师中有不少<span class="bg-spoiler inline-spoiler w-ex3a">京剧迷</span>。</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(7) <span class="bg-spoiler inline-spoiler w-ex3a">为了</span>给朋友帮忙，他饭都没吃就走了。</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(8) 你怎么了？最近总是<span class="bg-spoiler inline-spoiler w-ex3a">丢</span>三落四的。</span></div></div>
+  </div>
+
+  <div class="grammar-note" style="margin-top: 30px; margin-bottom: 15px;"><strong>B.</strong> Използвайте: 过, 了</div>
+  <div class="dialogue-container">
+    <div class="line"><div class="content"><span class="zh-text">(1) 昨天我看<span class="bg-spoiler inline-spoiler w-ex3bc">了</span>一个文物展览。</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(2) 你买票<span class="bg-spoiler inline-spoiler w-ex3bc">了</span>没有？</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(3) 我去<span class="bg-spoiler inline-spoiler w-ex3bc">过</span>那儿，我带你去吧。</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(4) 我没有看<span class="bg-spoiler inline-spoiler w-ex3bc">过</span>这本书，不知道好不好。</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(5) 来中国以后，我没有得<span class="bg-spoiler inline-spoiler w-ex3bc">过</span>病。</span></div></div>
+  </div>
+
+  <div class="grammar-note" style="margin-top: 30px; margin-bottom: 15px;"><strong>C.</strong> Използвайте: 次, 遍</div>
+  <div class="dialogue-container">
+    <div class="line"><div class="content"><span class="zh-text">(1) 请大家再听一<span class="bg-spoiler inline-spoiler w-ex3bc">遍</span>。</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(2) 这个公园我一<span class="bg-spoiler inline-spoiler w-ex3bc">次</span>也没去过。</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(3) 这种药一天吃三<span class="bg-spoiler inline-spoiler w-ex3bc">次</span>，一次吃两片。</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(4) 香港我已经去过两<span class="bg-spoiler inline-spoiler w-ex3bc">次</span>了。</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(5) 每课课文我都要读七八<span class="bg-spoiler inline-spoiler w-ex3bc">遍</span>。</span></div></div>
+  </div>
+
+  <!-- EXERCISE 4 -->
+  <h2 style="margin-top: 40px;">4. 用适当的结果补语填空 (Попълни с резултативен модификатор)</h2>
+  <div class="dialogue-container">
+    <div class="line"><div class="content"><span class="zh-text">(1) 请大家准备<span class="bg-spoiler inline-spoiler w-ex4">好</span>笔和本子，现在听写句子。</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(2) 我发<span class="bg-spoiler inline-spoiler w-ex4">给</span>你的邮件，你收到了没有？</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(3) 那本书你找<span class="bg-spoiler inline-spoiler w-ex4">着 / 找到</span>了没有？</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(4) A: 吃<span class="bg-spoiler inline-spoiler w-ex4">完</span>晚饭我们一起去跳舞吧。<br>B: 不行，今天的作业还没做<span class="bg-spoiler inline-spoiler w-ex4">完</span>呢。</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(5) A: 这瓶花儿我们放<span class="bg-spoiler inline-spoiler w-ex4">在 / 到</span>什么地方呢？<br>B: 放<span class="bg-spoiler inline-spoiler w-ex4">在 / 到</span>桌子上吧。</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(6) A: 这件礼物是谁送<span class="bg-spoiler inline-spoiler w-ex4">给</span>你的？<br>B: 一个同学送<span class="bg-spoiler inline-spoiler w-ex4">给</span>我的。</span></div></div>
+  </div>
+
+  <!-- EXERCISE 5 -->
+  <h2 style="margin-top: 40px;">5. 用动词和补语填空 (Попълни с глагол и модификатор)</h2>
+  <div class="dialogue-container">
+    <div class="line"><div class="content"><span class="zh-text">(1) 昨天买来的那本新书你<span class="bg-spoiler inline-spoiler w-ex5">放在 / 放到</span>哪儿了？</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(2) 这张画儿咱们<span class="bg-spoiler inline-spoiler w-ex5">挂在 / 挂到 / 贴在 / 贴到</span>什么地方呢？</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(3) 那本书我已经<span class="bg-spoiler inline-spoiler w-ex5">交给 / 还给</span>她了。</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(4) 这张照片我<span class="bg-spoiler inline-spoiler w-ex5">挂在 / 挂到 / 贴在 / 贴到</span>墙上，怎么样？</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(5) 你要的词典我给你<span class="bg-spoiler inline-spoiler w-ex5">买着 / 买到 / 买好</span>了。</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(6) 山本过生日，我们<span class="bg-spoiler inline-spoiler w-ex5">送给</span>她一件什么礼物呢？</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(7) 今天的生词我还没<span class="bg-spoiler inline-spoiler w-ex5">记住 / 学好</span>呢。</span></div></div>
+    <div class="line"><div class="content"><span class="zh-text">(8) 那几张照片我已经<span class="bg-spoiler inline-spoiler w-ex5">发给 / 送给 / 寄给 / 带给</span>她了。</span></div></div>
+  </div>
+
+  <!-- EXERCISE 6 -->
+  <h2 style="margin-top: 40px;">6. 改错句 (Поправи грешните изречения)</h2>
+  <div class="dialogue-container">
+    <div class="line">
+      <div class="content">
+        <span class="zh-text">(1) 昨天晚上，我到十点工作。</span>
+        <div class="ex6-spoilers">
+          <span class="bg-spoiler ex6-answer">✅ 昨天晚上，我工作<span class="error-highlight">到</span>十点。</span>
+          <span class="bg-spoiler ex6-explanation">Обяснение: когато въвежда крайната точка на действието, указано в сказуемото, във времето или пространството, 到 се използва в постпозиция, т.е. след сказуемото.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="content">
+        <span class="zh-text">(2) 这本书我一看完就来给你还.</span>
+        <div class="ex6-spoilers">
+          <span class="bg-spoiler ex6-answer">✅ 这本书我一看完就来还<span class="error-highlight">给</span>你。</span>
+          <span class="bg-spoiler ex6-explanation">Обяснение: Не е напълно погрешно, в разговорния език може да мине незабелязано. Но при глаголи от типа давам/предавам/изпращам и др. се предпочита 给 да се използва след сказуемото (还 huán).</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="content">
+        <span class="zh-text">(3) 老师的电话号码我忘了，因为我没记住在本子上。</span>
+        <div class="ex6-spoilers">
+          <span class="bg-spoiler ex6-answer">✅ ...因为我没记<span class="error-highlight">在 / 到</span>本子上。</span>
+          <span class="bg-spoiler ex6-explanation">Обяснение: Глаголът 记 може да означава „записвам“ или „запомням“. В във втория случай върви с резултативен модификатор 住, а в първия – с 在/到.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="content">
+        <span class="zh-text">(4) 我下了飞机就看了爸爸。</span>
+        <div class="ex6-spoilers">
+          <span class="bg-spoiler ex6-answer">✅ 我下了飞机就<span class="error-highlight">看到 / 看见 / 见到</span>了爸爸。</span>
+          <span class="bg-spoiler ex6-explanation">Обяснение: 看 + лице означава „(отивам) да се видя с някого“. Тук явно се има предвид друго: „видях тате“.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="content">
+        <span class="zh-text">(5) 我打算在这儿到明年七月学习。</span>
+        <div class="ex6-spoilers">
+          <span class="bg-spoiler ex6-answer">✅ 我打算在这儿学习<span class="error-highlight">到</span>明年七月。</span>
+          <span class="bg-spoiler ex6-explanation">Обяснение: Същото като в №1.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="content">
+        <span class="zh-text">(6) 她进步很大,现在已经能听见老师的话了。</span>
+        <div class="ex6-spoilers">
+          <span class="bg-spoiler ex6-answer">✅ 她进步很大,现在已经能<span class="error-highlight">听懂</span>老师的话了。</span>
+          <span class="bg-spoiler ex6-explanation">Обяснение: Вече (успява да) <s>чува / дочува</s> разбира какво казва учителят.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

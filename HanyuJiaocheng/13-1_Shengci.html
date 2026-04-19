@@ -1,0 +1,438 @@
+﻿<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <title>第13课 生词 - Урок 13</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="top-actions">
+    <button id="toggleThemeBtn" class="square-btn" title="Тема: превключване нощна/дневна">🌙</button>
+  </div>
+
+  <h1 id="lesson-title">第13课 生词</h1>
+  <div id="lesson-subtext" class="subtext">Урок 13 - Нови думи</div>
+
+  <div class="controls">
+    <div class="control-group">
+      <span class="control-label">Размер БГ текст и пинин</span>
+      <input id="bgFontSlider" type="range" min="14" max="32" value="18">
+      <span class="control-value" id="bgFontValue">18 px</span>
+    </div>
+    <div class="control-group">
+      <span class="control-label">Размер Китайски текст</span>
+      <input id="zhFontSlider" type="range" min="18" max="48" value="24">
+      <span class="control-value" id="zhFontValue">24 px</span>
+    </div>
+  </div>
+
+  <div id="entries-container" class="entries">
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">1.</span>
+        <span class="word-zh" lang="zh-Hans">照</span>
+        <span class="word-py">zhào</span>
+        <span class="word-bg">- снимам</span>
+      </div>
+      <div class="word-notes">
+        <p>⚠️ За снимки, не за видео. Повече се използва <span class="zh-content" lang="zh-Hans">拍</span> (pāi).</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">2.</span>
+        <span class="word-zh" lang="zh-Hans">选</span>
+        <span class="word-py">xuǎn</span>
+        <span class="word-bg">- избирам</span>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">3.</span>
+        <span class="word-zh" lang="zh-Hans">洗</span>
+        <span class="word-py">xǐ</span>
+        <span class="word-bg">- проявявам</span>
+      </div>
+      <div class="word-notes">
+        <p>📌 (снимки – не е много широко използвана дума, но в „Шерлок Холмс“ вече я срещахме точно в това значение)</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">4.</span>
+        <span class="word-zh" lang="zh-Hans">闭</span>
+        <span class="word-py">bì</span>
+        <span class="word-bg">- затварям</span>
+      </div>
+      <div class="word-notes">
+        <p>📌 Обичайно се използва за очи/уста (<span class="zh-content" lang="zh-Hans">闭眼</span> / <span class="zh-content" lang="zh-Hans">闭嘴</span> zuǐ уста → млъкни!).</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">5.</span>
+        <span class="word-zh" lang="zh-Hans">虚</span>
+        <span class="word-py">xū</span>
+        <span class="word-bg">- размазан, неясен</span>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">6.</span>
+        <span class="word-zh" lang="zh-Hans">删</span>
+        <span class="word-py">shān</span>
+        <span class="word-bg">- изтривам</span>
+        <div class="word-notes">
+        <p>📌Например файл, или графичен елемент – а не повърхност. <br>
+          📌Често се използва 删掉 (виж в края на №19).</p>
+        </p>
+      </div>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">7.</span>
+        <span class="word-zh" lang="zh-Hans">油画</span>
+        <span class="word-py">yóuhuà</span>
+        <span class="word-bg">- маслена картина</span>
+      </div>
+      <div class="word-notes">
+        <p>⚠️ Повечето неща, които в нашите представи са картини, на китайски са <span class="zh-content" lang="zh-Hans">油画</span>. Китайските картини традиционно се рисуват с туш, а не с боя, така че за тях това разграничение е съществено.</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">8.</span>
+        <span class="word-zh" lang="zh-Hans">放大</span>
+        <span class="word-py">fàngdà</span>
+        <span class="word-bg">- увеличавам</span>
+      </div>
+      <div class="word-notes">
+        <p>📌 Има се предвид фотографско увеличение. Увеличавам размера на образа. Например на текста на екрана. Това се използва и за „zoom in“.</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">9.</span>
+        <span class="word-zh" lang="zh-Hans">寸</span>
+        <span class="word-py">cùn</span>
+        <span class="word-bg">- цун (мерна единица)</span>
+      </div>
+      <div class="word-notes">
+        <p>Мерна единица за дължина, ок. 3.33 см.<br>
+        📌 В традиционната мерна система, един <span class="zh-content" lang="zh-Hans">寸</span> се дели на 10 <span class="zh-content" lang="zh-Hans">分</span>.<br>
+        📌 Има дума <span class="zh-content" lang="zh-Hans">公寸</span>, която значи „дециметър“, но не се използва широко.</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">10.</span>
+        <span class="word-zh" lang="zh-Hans">差(一)点儿</span>
+        <span class="word-py">chà (yì) diǎnr</span>
+        <span class="word-bg">- за малко да, едва не</span>
+      </div>
+      <div class="word-notes">
+        <p>⚠️ Употребата е разгледана обстойно в т. 1 от разяснителните бележки преди граматиката.</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">11.</span>
+        <span class="word-zh" lang="zh-Hans">碰</span>
+        <span class="word-py">pèng</span>
+        <span class="word-bg">- сблъсквам се, натъквам се, попадам на; срещам се с някого инцидентно</span>
+      </div>
+      <div class="word-notes">
+        <p>▶️ <span class="zh-content" lang="zh-Hans">我在路上碰到了一起交通事故。</span><button class="tts-btn" onclick="speak('我在路上碰到了一起交通事故。', event)" title="Изслушай">🔊</button> <span class="bg-spoiler">По пътя попаднах на една катастрофа.</span><br>
+        ▶️ <span class="zh-content" lang="zh-Hans">我在路上碰到了麦克。</span><button class="tts-btn" onclick="speak('我在路上碰到了麦克。', event)" title="Изслушай">🔊</button> <span class="bg-spoiler">По пътя срещнах Майк.</span></p>
+        <p>📌 В това значение обикновено се използва с <span class="zh-content" lang="zh-Hans">到, 上</span> или <span class="zh-content" lang="zh-Hans">见</span> (<span class="zh-content" lang="zh-Hans">碰到/碰见/碰上了</span>...)</p>
+        <p>⚠️ Освен това може да значи и блъскам, бутам (се в нещо):<br>
+        ▶️ <span class="zh-content" lang="zh-Hans">小心，别碰桌子了！</span><button class="tts-btn" onclick="speak('小心，别碰桌子了！', event)" title="Изслушай">🔊</button> <span class="bg-spoiler">Внимавай да не бутнеш масата!</span></p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">12.</span>
+        <span class="word-zh" lang="zh-Hans">起</span>
+        <span class="word-py">qǐ</span>
+        <span class="word-bg">- класификатор</span>
+      </div>
+      <div class="word-notes">
+        <p>📌 Класификатор за инциденти, катастрофи, бедствия и др. неблагоприятни явления/събития.</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">13.</span>
+        <span class="word-zh" lang="zh-Hans">事故</span>
+        <span class="word-py">shìgù</span>
+        <span class="word-bg">- инцидент, произшествие, катастрофа</span>
+      </div>
+      <div class="word-notes">
+        <p>▶️ <span class="zh-content" lang="zh-Hans">故事</span><button class="tts-btn" onclick="speak('故事', event)" title="Изслушай">🔊</button> с разменени места на йероглифите.</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">14.</span>
+        <span class="word-zh" lang="zh-Hans">整整</span>
+        <span class="word-py">zhěngzhěng</span>
+        <span class="word-bg">- цял, пълен</span>
+      </div>
+      <div class="word-notes">
+        <p>⚠️ Когато взимахме <span class="zh-content" lang="zh-Hans">全</span>, ви казах, че обичайно не се използва то за време в изрази от типа на „цял ден“, „цял час“ и пр. Е, това е думата, която се използва за целта. Особеното е, че тя се използва наречийно, т.е. преди сказуемото, а не преди обекта, който е цял, например:</p>
+        <p>▶️ <span class="zh-content" lang="zh-Hans">我<b>整整</b>等了你一个半小时。</span><button class="tts-btn" onclick="speak('我整整等了你一个半小时。', event)" title="Изслушай">🔊</button> <span class="bg-spoiler">Чаках те цял час и половина.</span><br>
+        ▶️ <span class="zh-content" lang="zh-Hans">我们在北京<b>整整</b>玩了三天。</span><button class="tts-btn" onclick="speak('我们在北京整整玩了三天。', event)" title="Изслушай">🔊</button> <span class="bg-spoiler">Забавлявахме се/Обикаляхме в Пекин цели три дни.</span></p>
+        <p>📌 Има и прилагателно <span class="zh-content" lang="zh-Hans">整个</span> (zhěnggè) „целият“:<br>
+        ▶️ <span class="zh-content" lang="zh-Hans">你整个房间怎么这么乱呢？</span><button class="tts-btn" onclick="speak('你整个房间怎么这么乱呢？', event)" title="Изслушай">🔊</button> <span class="bg-spoiler">Как може да ти е толкова разхвърляна цялата стая?</span><br>
+        ▶️ <span class="zh-content" lang="zh-Hans">整个城市都在睡觉。</span><button class="tts-btn" onclick="speak('整个城市都在睡觉。', event)" title="Изслушай">🔊</button> <span class="bg-spoiler">Целият град спи.</span></p>
+        <p>📌 Всъщност <span class="zh-content" lang="zh-Hans">整整</span> в тази наречийна функция винаги се употребява удвоено; може да се използва и едносричният вариант, но само в по-ограничени случаи:<br>
+        ▶️ <span class="zh-content" lang="zh-Hans">整天</span><button class="tts-btn" onclick="speak('整天', event)" title="Изслушай">🔊</button> – „целият ден“ (което знаем, че може да се каже и като <span class="zh-content" lang="zh-Hans">一天</span>).</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">15.</span>
+        <span class="word-zh" lang="zh-Hans">眼镜(儿)</span>
+        <span class="word-py">yǎnjìngr</span>
+        <span class="word-bg">- очила</span>
+      </div>
+      <div class="word-notes">
+        <p>📌 Класификатор: <span class="zh-content" lang="zh-Hans">副</span> fù (чифт).<br>
+        ⚠️ Разликата с „очи“ е в тоновете: <span class="zh-content" lang="zh-Hans">眼睛</span> (yǎnjing). За да е ясно, тук е по-добре в очилата да се използва еризацията.</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">16.</span>
+        <span class="word-zh" lang="zh-Hans">别提了</span>
+        <span class="word-py">bié tí le</span>
+        <span class="word-bg">- не питай, не споменавай, остави</span>
+      </div>
+      <div class="word-notes">
+        <p>📌 Използва се, когато става дума за нежелателна или неприятна тема. Особено близко е нашето „ма'ни“, което все пак е малко по-разговорно – но не много.</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">17.</span>
+        <span class="word-zh" lang="zh-Hans">倒霉</span>
+        <span class="word-py">dǎo méi</span>
+        <span class="word-bg">- такъв, който няма късмет или е свързан с лош късмет</span>
+      </div>
+      <div class="word-notes">
+        <p>▶️ <span class="zh-content" lang="zh-Hans">我真倒霉！</span><button class="tts-btn" onclick="speak('我真倒霉！', event)" title="Изслушай">🔊</button> <span class="bg-spoiler">Изобщо не ми върви! / Голям съм карък!</span><br>
+        ▶️ <span class="zh-content" lang="zh-Hans">今天是很倒霉的一天。</span><button class="tts-btn" onclick="speak('今天是很倒霉的一天。', event)" title="Изслушай">🔊</button> <span class="bg-spoiler">Днес е много куц/крив ден.</span><br>
+        ▶️ <span class="zh-content" lang="zh-Hans">我这几天碰见了一件很倒霉的事。</span><button class="tts-btn" onclick="speak('我这几天碰见了一件很倒霉的事。', event)" title="Изслушай">🔊</button> <span class="bg-spoiler">Тези дни ми се случи много каръшка случка.</span></p>
+        <p>⚠️ Важно е да се има предвид, че на китайски <span class="zh-content" lang="zh-Hans">倒霉</span> е прилагателно, а на български обикновено не се превежда с прилагателни.</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">18.</span>
+        <span class="word-zh" lang="zh-Hans">摔跤</span>
+        <span class="word-py">shuāi jiāo</span>
+        <span class="word-bg">- (спъвам се и) падам, губя равновесие</span>
+      </div>
+      <div class="word-notes">
+        <p>📌 <span class="zh-content" lang="zh-Hans">跤</span> е стар йероглиф за „пета“ (не се използва в съвременния език).<br>
+        <span class="zh-content" lang="zh-Hans">摔</span> shuāi - падам.</p>
+        <p>⚠️ <span class="zh-content" lang="zh-Hans">摔跤</span> е делим глагол. Често се казва примерно: <br>
+        ▶️ <span class="zh-content" lang="zh-Hans">我摔了一跤。</span><button class="tts-btn" onclick="speak('我摔了一跤。', event)" title="Изслушай">🔊</button> <span class="bg-spoiler">Паднах.</span></p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">19.</span>
+        <span class="word-zh" lang="zh-Hans">掉</span>
+        <span class="word-py">diào</span>
+        <span class="word-bg">- падам</span>
+      </div>
+      <div class="word-notes">
+        <p>📌 Тук става дума за нещо, което пада вертикално надолу. Докато при <span class="zh-content" lang="zh-Hans">摔</span> идеята е по-скоро падането като сблъсък с повърхността, <span class="zh-content" lang="zh-Hans">掉</span> е от началото на движението през летенето надолу.</p>
+        <p>📌 <span class="zh-content" lang="zh-Hans">倒</span> dǎo от №17 също може да означава „падам“, но се има предвид „падам настрани“, „катурвам се“, „рухвам“, „обръщам се“.<br>
+        ▶️ На китайски, когато се скандира „Долу!“ (примерно за някоя държава, партия или политик), се използва „<span class="zh-content" lang="zh-Hans">打倒</span>……“ (<span class="zh-content" lang="zh-Hans">打倒</span> е букв. отхвърлям, свалям от власт).</p>
+        <p>📌 <span class="zh-content" lang="zh-Hans">掉</span> може да значи и „отпадам“: „<span class="zh-content" lang="zh-Hans">我的中国人朋友</span>“ е грешно, „<span class="zh-content" lang="zh-Hans">人</span>“ трябва да отпадне. Двойната дума за премахвам нещо/отпадам е <span class="zh-content" lang="zh-Hans">去掉</span>.</p>
+        <p>⚠️ В учебника дават превод „to drop something“, но на китайски няма глагол, който да превежда директно нашето „изпускам нещо“. Не се казва „<span class="zh-content" lang="zh-Hans">我掉了我的钱包</span>“, казва се <span class="zh-content" lang="zh-Hans">我的钱包掉了。</span><button class="tts-btn" onclick="speak('我的钱包掉了。', event)" title="Изслушай">🔊</button> <span class="bg-spoiler">(Портфейлът ми падна)</span>. Друг вариант е <span class="zh-content" lang="zh-Hans">我丢了我的钱包。</span><button class="tts-btn" onclick="speak('我丢了我的钱包。', event)" title="Изслушай">🔊</button> <span class="bg-spoiler">(букв. „Загубих си го“)</span>.</p>
+        <p>Обичайно е следвано от <span class="zh-content" lang="zh-Hans">到</span> / <span class="zh-content" lang="zh-Hans">在</span>.</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">20.</span>
+        <span class="word-zh" lang="zh-Hans">地上</span>
+        <span class="word-py">dìshang</span>
+        <span class="word-bg">- на земята/на пода</span>
+      </div>
+      <div class="word-notes">
+        <p>▶️ <span class="zh-content" lang="zh-Hans">钱包掉在/到地上了。</span><button class="tts-btn" onclick="speak('钱包掉在地上了。', event)" title="Изслушай">🔊</button> <span class="bg-spoiler">Портфейлът падна на земята.</span></p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">21.</span>
+        <span class="word-zh" lang="zh-Hans">上班</span>
+        <span class="word-py">shàng bān</span>
+        <span class="word-bg">- отивам на работа, започвам работа; заставам на смяна</span>
+      </div>
+      <div class="word-notes">
+        <p>📌 <span class="zh-content" lang="zh-Hans">下班</span> xià bān - свършвам работа/смяна.</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">22.</span>
+        <span class="word-zh" lang="zh-Hans">保证</span>
+        <span class="word-py">bǎozhèng</span>
+        <span class="word-bg">- гарантирам</span>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">23.</span>
+        <span class="word-zh" lang="zh-Hans">遵守</span>
+        <span class="word-py">zūnshǒu</span>
+        <span class="word-bg">- спазвам</span>
+      </div>
+      <div class="word-notes">
+        <p>📌 (правила, разпоредби, принципи и пр.)</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">24.</span>
+        <span class="word-zh" lang="zh-Hans">规则</span>
+        <span class="word-py">guīzé</span>
+        <span class="word-bg">- правило</span>
+      </div>
+      <div class="word-notes">
+        <p>▶️ <span class="zh-content" lang="zh-Hans">遵守交通规则</span><button class="tts-btn" onclick="speak('遵守交通规则', event)" title="Изслушай">🔊</button> - <span class="bg-spoiler">спазвам правилата за движение.</span></p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">25.</span>
+        <span class="word-zh" lang="zh-Hans">造成</span>
+        <span class="word-py">zàochéng</span>
+        <span class="word-bg">- причинявам, довеждам до</span>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">26.</span>
+        <span class="word-zh" lang="zh-Hans">拥挤</span>
+        <span class="word-py">yōngjǐ</span>
+        <span class="word-bg">- претъпкан, блъсканица</span>
+      </div>
+      <div class="word-notes">
+        <p>📌 Прилагателно. (двойната дума за <span class="zh-content" lang="zh-Hans">挤</span>)</p>
+        <p>▶️ <span class="zh-content" lang="zh-Hans">交通很拥挤。</span><button class="tts-btn" onclick="speak('交通很拥挤。', event)" title="Изслушай">🔊</button> - <span class="bg-spoiler">Трафикът е натоварен.</span></p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">27.</span>
+        <span class="word-zh" lang="zh-Hans">主要</span>
+        <span class="word-py">zhǔyào</span>
+        <span class="word-bg">- главен/главно, основен/основно</span>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">28.</span>
+        <span class="word-zh" lang="zh-Hans">原因</span>
+        <span class="word-py">yuányīn</span>
+        <span class="word-bg">- причина</span>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">29.</span>
+        <span class="word-zh" lang="zh-Hans">之一</span>
+        <span class="word-py">zhī yī</span>
+        <span class="word-bg">- един от</span>
+      </div>
+      <div class="word-notes">
+        <p>📌 Следлог. Използва се в края на фразата, непосредствено след съществителното, което указва множеството.</p>
+        <p>▶️ <span class="zh-content" lang="zh-Hans">学汉语是我去中国的主要原因之一。</span><button class="tts-btn" onclick="speak('学汉语是我去中国的主要原因之一。', event)" title="Изслушай">🔊</button><br>
+        <span class="bg-spoiler">Ученето на китайски е една от основните причини за отиването ми в Китай.</span></p>
+        <p>⚠️ Особеното е, че не се използват аналогично други числителни като <span class="zh-content" lang="zh-Hans">之二 , 之三 </span>и др.:<br>
+        ▶️ <span class="zh-content" lang="zh-Hans">上海和北京是中国最大的城市之一。</span><button class="tts-btn" onclick="speak('上海和北京是中国最大的城市之一。', event)" title="Изслушай">🔊</button><br>
+        <span class="bg-spoiler">Шанхай и Пекин са едни от / два от най-големите градове в Китай.</span></p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">30.</span>
+        <span class="word-zh" lang="zh-Hans">引起</span>
+        <span class="word-py">yǐnqǐ</span>
+        <span class="word-bg">- предизвиквам, водя до</span>
+      </div>
+      <div class="word-notes">
+        <p>📌 Частичен синоним на 25. <span class="zh-content" lang="zh-Hans">造成</span>, но докато <span class="zh-content" lang="zh-Hans">造成</span> винаги е нещо негативно (причинявам), <span class="zh-content" lang="zh-Hans">引起</span> е по-неутрално (повличам след себе си, предизвиквам – може да е напр. дискусии, интерес и др.).</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">31.</span>
+        <span class="word-zh" lang="zh-Hans">赶快</span>
+        <span class="word-py">gǎnkuài</span>
+        <span class="word-bg">- бързо, побързай</span>
+      </div>
+      <div class="word-notes">
+        <p>📌 Използва се за нещо, което трябва да се случи по-скоро, а не за нещо, което се е случило в миналото.</p>
+        <p>⚠️ Наречие!, поради което се използва непосредствено преди глагола. Може и самостоятелно, в императивно изречение: „Бързо!“ „Веднага (отивай/го свърши това)!“</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="word-header">
+        <span class="word-number">32.</span>
+        <span class="word-zh" lang="zh-Hans">发展</span>
+        <span class="word-py">fāzhǎn</span>
+        <span class="word-bg">- развивам (се), развитие</span>
+      </div>
+      <div class="word-notes">
+        <p>⚠️ Коварен момент: <span class="zh-content" lang="zh-Hans">发展中国家</span>: развиващи се държави (букв. държави в развитие). Деленето е <span class="zh-content" lang="zh-Hans">发展 | 中 | 国家</span>. Тук няма „Китай“.</p>
+        <p>⚠️ Друг коварен момент: не означава „развит“: <span class="zh-content" lang="zh-Hans">发达</span> fādá (<span class="zh-content" lang="zh-Hans">发达国家</span> - развити страни).</p>
+      </div>
+    </div>
+
+  <script src="script.js"></script>
+<script src="https://replit-cdn.com/replit-pill/replit-pill.global.js" data-repl-id="3ad1051c-31c2-4eab-8f36-d34010581e66"></script></body>
+</html>

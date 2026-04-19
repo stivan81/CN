@@ -1,0 +1,322 @@
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <title>第十二课 - Урок 12</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="top-actions">
+    <button id="themeBtn" class="square-btn" title="Смени тема">🌙</button>
+  </div>
+
+  <h1>第十二课</h1>
+  <h2>一、课文</h2>
+
+  <div class="controls">
+    <div class="control-group">
+      <span class="control-label">Китайски текст: <span id="zhVal">26</span>px</span>
+      <input type="range" id="zhSlider" min="20" max="48" value="26">
+    </div>
+    <div class="control-group">
+      <span class="control-label">Български текст: <span id="bgVal">19</span>px</span>
+      <input type="range" id="bgSlider" min="14" max="32" value="19">
+    </div>
+  </div>
+
+  <!-- TEXT 1 -->
+  <h3>(一) 我的护照你找到了没有</h3>
+  <div class="context-note">
+    💬 关建平的护照不知道放在什么地方了，他要妻子夏雨帮他找……
+    <br><span class="bg-spoiler">Гуан Дзиенпин не знае къде си е сложил паспорта, иска от съпругата си Ся Ю да му помогне да го намери...</span>
+  </div>
+
+  <div class="dialogue-container">
+    <div class="line">
+      <div class="actant">关建平：</div>
+      <div class="content">
+        <span class="zh-text">我的护照你找到了没有？</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('我的护照你找到了没有？', '关建平')">🔊</button>
+          <span class="bg-spoiler">Намери ли ми паспорта?</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">夏雨：</div>
+      <div class="content">
+        <span class="zh-text">没有，我找了半天也没找着。你是不是放在办公室了？</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('没有，我找了半天也没找着。你是不是放在办公室了？', '夏雨')">🔊</button>
+          <span class="bg-spoiler">Не, сто часа го търсих и така и не го намерих. Да не си го оставил в офиса?</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">关建平：</div>
+      <div class="content">
+        <span class="zh-text">护照我从来不往办公室里放。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('护照我从来不往办公室里放。', '关建平')">🔊</button>
+          <span class="bg-spoiler">Никога не си оставям паспорта в офиса.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">夏雨：</div>
+      <div class="content">
+        <span class="zh-text">昨天你办完签证放在什么地方了？</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('昨天你办完签证放在什么地方了？', '夏雨')">🔊</button>
+          <span class="bg-spoiler">Къде го остави вчера, след като си извади визата?</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">关建平：</div>
+      <div class="content">
+        <span class="zh-text">放在我的手提包里了。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('放在我的手提包里了。', '关建平')">🔊</button>
+          <span class="bg-spoiler">В ръчната си чанта го оставих.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">夏雨：</div>
+      <div class="content">
+        <span class="zh-text">你的包呢？</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('你的包呢？', '夏雨')">🔊</button>
+          <span class="bg-spoiler">А тя къде е?</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">关建平：</div>
+      <div class="content">
+        <span class="zh-text">我一回到家不是就交给你了吗？</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('我一回到家不是就交给你了吗？', '关建平')">🔊</button>
+          <span class="bg-spoiler">Нали ти я дадох веднага щом се прибрах?</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">夏雨：</div>
+      <div class="content">
+        <span class="zh-text">对。我再好好儿找找。啊，找到了！</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('对。我再好好儿找找。啊，找到了！', '夏雨')">🔊</button>
+          <span class="bg-spoiler">Вярно. Ще потърся пак хубаво. О, намерих го!</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">关建平：</div>
+      <div class="content">
+        <span class="zh-text">是在包里找到的吗？</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('是在包里找到的吗？', '关建平')">🔊</button>
+          <span class="bg-spoiler">В чантата ли го намери?</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">夏雨：</div>
+      <div class="content">
+        <span class="zh-text">不是，在你的大衣口袋里找到的。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('不是，在你的大衣口袋里找到的。', '夏雨')">🔊</button>
+          <span class="bg-spoiler">Не, в джоба на палтото ти.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">关建平：</div>
+      <div class="content">
+        <span class="zh-text">啊，我忘了。是我昨天晚上放到口袋里的。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('啊，我忘了。是我昨天晚上放到口袋里的。', '关建平')">🔊</button>
+          <span class="bg-spoiler">О, забравих. Снощи аз го сложих в джоба.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">夏雨：</div>
+      <div class="content">
+        <span class="zh-text">你最近总是丢三落四的。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('你最近总是丢三落四的。', '夏雨')">🔊</button>
+          <span class="bg-spoiler">Напоследък все си (такъв) разпилян...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEXT 2 -->
+  <h3 style="margin-top: 60px;">(二) 我是球迷</h3>
+
+  <div class="dialogue-container">
+    <div class="line">
+      <div class="actant">A：</div>
+      <div class="content">
+        <span class="zh-text">你喜欢足球吗？</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('你喜欢足球吗？', 'A')">🔊</button>
+          <span class="bg-spoiler">Обичаш ли футбол?</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">B：</div>
+      <div class="content">
+        <span class="zh-text">一般。你呢？</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('一般。你呢？', 'B')">🔊</button>
+          <span class="bg-spoiler">Средно. А ти?</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">A：</div>
+      <div class="content">
+        <span class="zh-text">你还不知道啊，我可是个球迷。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('你还不知道啊，我可是个球迷。', 'A')">🔊</button>
+          <span class="bg-spoiler">Ама ти не знаеш ли? Ами че аз съм голям фен!</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">B：</div>
+      <div class="content">
+        <span class="zh-text">迷到什么程度？</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('迷到什么程度？', 'B')">🔊</button>
+          <span class="bg-spoiler">Колко си запален? (букв. „запален до каква степен?)"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">A：</div>
+      <div class="content">
+        <span class="zh-text">为了看球，饭我可以不吃，觉我可以不睡，工作我可以不干。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('为了看球，饭我可以不吃，觉我可以不睡，工作我可以不干。', 'A')">🔊</button>
+          <span class="bg-spoiler">За да гледам мач, и храна мога да не ям, и сън мога да не спя, и работа мога да не работя.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">B：</div>
+      <div class="content">
+        <span class="zh-text">我看球迷一个个都有点儿不正常。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('我看球迷一个个都有点儿不正常。', 'B')">🔊</button>
+          <span class="bg-spoiler">Според мен всички фенове са малко ненормални.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">A：</div>
+      <div class="content">
+        <span class="zh-text">我也承认，有时候迷到了发狂的程度。欧锦赛期间，我像生了病一样。白天想睡觉，一到晚上就特别有精神。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('我也承认，有时候迷到了发狂的程度。欧锦赛期间，我像生了病一样。白天想睡觉，一到晚上就特别有精神。', 'A')">🔊</button>
+          <span class="bg-spoiler">И аз си признавам, понякога се паля до [степен на] лудост. По време на Европейското бях като болен. През деня ми се спеше, а щом станеше вечер, страшно се оживявах.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">B：</div>
+      <div class="content">
+        <span class="zh-text">你白天不工作吗？</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('你白天不工作吗？', 'B')">🔊</button>
+          <span class="bg-spoiler">През деня не работиш ли?</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">A：</div>
+      <div class="content">
+        <span class="zh-text">这个商店是我自己开的，我在门上贴了一张通知——"暂停营业"。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('这个商店是我自己开的，我在门上贴了一张通知——"暂停营业"。', 'A')">🔊</button>
+          <span class="bg-spoiler">Този магазин си е мой [букв. „сам си го държа"]. Залепих бележка на вратата – „Временно не работи".</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">B：</div>
+      <div class="content">
+        <span class="zh-text">你还真是个球迷。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('你还真是个球迷。', 'B')">🔊</button>
+          <span class="bg-spoiler">Ти наистина си голям фен.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">A：</div>
+      <div class="content">
+        <span class="zh-text">我还不算最迷的。我有一个朋友，在一家外国公司工作，为了能去现场亲眼看看世界杯，他向老板请假，老板不准，他就辞职不干了。</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('我还不算最迷的。我有一个朋友，在一家外国公司工作，为了能去现场亲眼看看世界杯，他向老板请假，老板不准，他就辞职不干了。', 'A')">🔊</button>
+          <span class="bg-spoiler">И все пак не съм от най-запалените [букв. „не се считам за (един от) най-запалените]. Имам един приятел, който работеше в чуждестранна компания. За да успее да отиде на живо да гледа Световното, поискал отпуска от шефа, шефът не му разрешил и той напуснал.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">B：</div>
+      <div class="content">
+        <span class="zh-text">最后去成了吗？</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('最后去成了吗？', 'B')">🔊</button>
+          <span class="bg-spoiler">В крайна сметка успя ли да отиде?</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="actant">A：</div>
+      <div class="content">
+        <span class="zh-text">去成了。我真佩服他。能去现场看世界杯，太棒了！</span>
+        <div class="action-row">
+          <button class="tts-btn" onclick="speak('去成了。我真佩服他。能去现场看世界杯，太棒了！', 'A')">🔊</button>
+          <span class="bg-spoiler">Успя. Наистина му се възхищавам. Страхотно е да (успееш да) отидеш да гледаш Световното на живо!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+<script src="https://replit-cdn.com/replit-pill/replit-pill.global.js" data-repl-id="3ad1051c-31c2-4eab-8f36-d34010581e66"></script></body>
+</html>
