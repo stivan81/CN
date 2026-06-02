@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Medical Communication Card – Plamen Ivanchev</title>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;600;700;800&display=swap');
+
+  @page {
+    size: 110mm 150mm;
+    margin: 0;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: #ffffff;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* --- Main Card Border Container --- */
+  .card {
+    width: 110mm;
+    height: 150mm;
+    background: #ffffff;
+    border: 4px solid #000000;
+    padding: 2mm;
+    position: relative;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+
+  .inner-border {
+    border: 1px solid #000000;
+    height: 100%;
+    padding: 3.5mm 3.5mm 3mm 3.5mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* --- Header - Maximize visibility with deep solid black --- */
+  .header {
+    background: #000000;
+    color: #ffffff;
+    text-align: center;
+    padding: 2.5mm;
+    border: 1px solid #000000;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3mm;
+    border-bottom: 1.5px solid #ffffff;
+    padding-bottom: 1.5mm;
+    margin-bottom: 1.5mm;
+  }
+
+  .header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 13.5px;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+  }
+
+  .header h2 {
+    font-size: 12px;
+    font-weight: 800;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .med-icon svg {
+    width: 16px;
+    height: 16px;
+    fill: #ffffff;
+  }
+
+  /* --- Patient Name & Identity --- */
+  .identity-section {
+    text-align: center;
+    margin-top: 1.5mm;
+  }
+
+  .patient-name {
+    font-family: 'Cinzel', serif;
+    font-size: 21px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1;
+    color: #000000;
+  }
+
+  .identity-details {
+    font-size: 9.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-top: 1.5mm;
+    display: flex;
+    justify-content: center;
+    gap: 4mm;
+    color: #000000;
+  }
+
+  /* --- Structural Ornaments (Pure Black for Print Crispness) --- */
+  hr.ornament {
+    border: 0;
+    height: 1.5px;
+    background: #000000;
+    margin: 2.5mm 0;
+    position: relative;
+    opacity: 1;
+  }
+
+  hr.ornament::after {
+    content: "❖";
+    position: absolute;
+    top: -6.5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffffff;
+    padding: 0 4px;
+    font-size: 11px;
+    color: #000000;
+    font-weight: bold;
+  }
+
+  /* --- Section Title Header --- */
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    margin-bottom: 2mm;
+    text-align: center;
+    letter-spacing: 1px;
+    color: #000000;
+  }
+
+  /* --- Medical Info Container (No grey gradients for cleaner print results) --- */
+  .medical-info {
+    border: 2px solid #000000;
+    padding: 2.5mm 3mm;
+    background: #ffffff;
+  }
+
+  .med-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 9.5px;
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  .med-list li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.2mm;
+    color: #000000;
+  }
+
+  .med-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  .med-list li svg {
+    width: 9px;
+    height: 9px;
+    margin-right: 2mm;
+    margin-top: 2px;
+    flex-shrink: 0;
+    fill: #000000;
+  }
+
+  .highlight-text {
+    background: #000000;
+    color: #ffffff;
+    padding: 0 4px;
+    margin: 0 1px;
+    font-weight: 800;
+  }
+
+  /* --- Emergency Contacts Grid (Highly Optimized Layout) --- */
+  .contacts-grid {
+    display: grid;
+    grid-template-columns: 1.12fr 0.88fr;
+    gap: 3mm;
+    margin-bottom: 0.5mm;
+  }
+
+  .contact-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .column-header {
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1.5mm;
+    display: flex;
+    align-items: center;
+    gap: 1mm;
+    color: #000000;
+  }
+
+  .primary-uk .column-header {
+    border-bottom: 2px solid #000000;
+    padding-bottom: 0.5mm;
+  }
+
+  .secondary-bg .column-header {
+    border-bottom: 2px solid #000000;
+    padding-bottom: 0.5mm;
+  }
+
+  /* --- Solid high contrast borders for flawless print reproduction --- */
+  .contact-box {
+    border: 1.5px solid #000000;
+    padding: 2mm;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #ffffff;
+  }
+
+  .contact-box.highlighted {
+    border-width: 2.5px; /* Thicker borders to naturally highlight UK daughter */
+  }
+
+  .contact-box.plain {
+    border: 1.5px solid #000000;
+    padding: 1.5mm 2mm;
+  }
+
+  /* Grouping bg contacts explicitly */
+  .bg-contacts-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2mm;
+    height: 100%;
+  }
+
+  .contact-name {
+    font-size: 11px; /* Made bigger for ultimate legibility */
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 1.5mm;
+    line-height: 1.1;
+    color: #000000;
+  }
+
+  .relation-tag {
+    font-size: 7.5px;
+    font-weight: 800;
+    color: #000000;
+    display: block;
+    text-transform: uppercase;
+    margin-top: 0.5mm;
+    letter-spacing: 0.2px;
+  }
+
+  /* --- Individual Contact Lines --- */
+  .contact-detail-row {
+    font-size: 9px; /* Made bigger as requested */
+    line-height: 1.25;
+    margin-bottom: 1mm;
+    color: #000000;
+  }
+
+  .contact-detail-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .contact-detail-row strong {
+    display: block;
+    font-size: 7.5px; /* Larger bold label headers */
+    text-transform: uppercase;
+    color: #000000;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+  }
+
+  .contact-detail-row span {
+    font-weight: 700;
+    word-break: break-all;
+  }
+
+  /* --- Footer Notes --- */
+  .footer-notes {
+    text-align: center;
+    border-top: 1.5px solid #000000;
+    padding-top: 2mm;
+    margin-top: 1mm;
+  }
+
+  .footer-notes p {
+    margin: 0;
+    font-size: 8.5px;
+    font-weight: 800;
+    line-height: 1.3;
+    color: #000000;
+  }
+
+  .footer-notes .sub-note {
+    font-size: 8px;
+    font-weight: 800;
+    margin-top: 0.5mm;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  /* --- Print Specific Reset --- */
+  @media print {
+    body {
+      min-height: auto;
+      background: #ffffff;
+    }
+    .card {
+      box-shadow: none;
+      border: 4px solid #000000;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="inner-border">
+    
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-top">
+        <div class="med-icon">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+        </div>
+        <h1>Medical Communication Card</h1>
+        <div class="med-icon">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+        </div>
+      </div>
+      <h2>Stroke Survivor • Severe Aphasia</h2>
+    </div>
+
+    <!-- IDENTITY -->
+    <div class="identity-section">
+      <div class="patient-name">Plamen Ivanchev</div>
+      <div class="identity-details">
+        <span>Born: Sept 1952</span>
+        <span>|</span>
+        <span>Visiting UK from: Bulgaria</span>
+      </div>
+    </div>
+
+    <hr class="ornament">
+
+    <!-- MEDICAL INFO -->
+    <div class="medical-info">
+      <ul class="med-list">
+        <li>
+          <svg viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
+          I am a stroke survivor with severe aphasia.
+        </li>
+        <li>
+          <svg viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
+          I have difficulty speaking and understanding.
+        </li>
+        <li>
+          <svg viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
+          I may need extra time to respond.
+        </li>
+        <li>
+          <svg viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
+          <span>Please speak <span class="highlight-text">SLOWLY</span> and use simple words.</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
+          <span class="highlight-text">YES / NO</span> questions are the most helpful.
+        </li>
+        <li>
+          <svg viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
+          My English is currently not reliable.
+        </li>
+      </ul>
+    </div>
+
+    <hr class="ornament">
+
+    <!-- CONTACTS SECTION -->
+    <div class="section-title">Emergency Contacts</div>
+    
+    <div class="contacts-grid">
+      
+      <!-- Left Column: Primary UK Contact -->
+      <div class="contact-column primary-uk">
+        <div class="column-header">Primary UK Contact</div>
+        <div class="contact-box highlighted">
+          <div>
+            <div class="contact-name">
+              Mariya Ivancheva
+              <span class="relation-tag">Daughter • UK Based</span>
+            </div>
+          </div>
+          <div>
+            <div class="contact-detail-row">
+              <strong>UK Phone</strong>
+              <span>07447 381176</span>
+            </div>
+            <div class="contact-detail-row">
+              <strong>WhatsApp / Viber</strong>
+              <span>+359 88 532 6131</span>
+            </div>
+            <div class="contact-detail-row">
+              <strong>Email</strong>
+              <span>mariya.ivancheva@gmail.com</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Bulgarian Contacts -->
+      <div class="contact-column secondary-bg">
+        <div class="column-header">Bulgarian Contacts</div>
+        
+        <div class="bg-contacts-wrapper">
+          <!-- Wife -->
+          <div class="contact-box plain">
+            <div class="contact-name">
+              Diana Yonova
+              <span class="relation-tag">(Wife)</span>
+            </div>
+            <div class="contact-detail-row">
+              <strong>Phone / WhatsApp / Viber</strong>
+              <span>+359 885 666 117</span>
+            </div>
+            <div class="contact-detail-row">
+              <strong>Email</strong>
+              <span>yonovad@gmail.com</span>
+            </div>
+          </div>
+
+          <!-- Son -->
+          <div class="contact-box plain">
+            <div class="contact-name">
+              Stefan Ivanchev
+              <span class="relation-tag">(Son)</span>
+            </div>
+            <div class="contact-detail-row">
+              <strong>Phone / WhatsApp / Viber</strong>
+              <span>+359 882 838 179</span>
+            </div>
+            <div class="contact-detail-row">
+              <strong>Email</strong>
+              <span>stivan81@gmail.com</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer-notes">
+      <p>I can walk and move independently. Speech & comprehension are limited.</p>
+      <div class="sub-note">Please assist me calmly if I seem confused.</div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
